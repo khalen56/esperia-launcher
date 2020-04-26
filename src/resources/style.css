@@ -1,0 +1,33 @@
+#stackPane {
+    -fx-background-image: url("./images/phare.png");
+    -fx-background-size: cover;
+}
+
+TextField, PasswordField {
+    -fx-border-color: white;
+    -fx-text-fill: white;
+    -fx-border-width: 0 0 1 0; // top, right, bottom, left
+    -fx-background-color: transparent;
+}
+
+.hand:hover {
+    -fx-cursor: hand;
+}
+
+.slider .axis { -fx-tick-label-fill: white; }
+
+.underline {
+    -fx-underline: true;
+}
+
+.zoom:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-scale-z: 1.1;
+}
+
+.bigzoom:hover {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+    -fx-scale-z: 1.2;
+}
