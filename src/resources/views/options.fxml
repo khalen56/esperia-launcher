@@ -22,7 +22,7 @@
             <Font size="24.0" />
         </font>
     </Label>
-   <Slider fx:id="ramSlider" blockIncrement="1.0" layoutX="150.0" layoutY="239.0" majorTickUnit="1.0" max="12.0" min="2.0" minorTickCount="0" prefHeight="24.0" prefWidth="375.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" styleClass="slider" value="2.0" />
+   <Slider fx:id="ramSlider" blockIncrement="1.0" layoutX="150.0" layoutY="239.0" majorTickUnit="1.0" max="12.0" min="1.0" minorTickCount="0" prefHeight="24.0" prefWidth="375.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" styleClass="slider" value="2.0" />
     <Label fx:id="game" layoutX="150.0" layoutY="339.0" onMouseReleased="#onOpenDir" styleClass="underline, hand" text="Ouvrir le dossier d'esperia" textFill="WHITE">
         <font>
             <Font size="24.0" />
