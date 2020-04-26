@@ -21,7 +21,6 @@ package me.gledoussal.nologin.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import fr.litarvan.openauth.model.response.AuthResponse;
-import me.gledoussal.Main;
 import me.gledoussal.nologin.account.Account;
 
 import java.io.File;
@@ -31,7 +30,25 @@ import java.io.FileWriter;
 public class Utilities {
 
     public static File getMinecraftDirectory() {
-        return Main.DIR;
+        String os = System.getProperty("os.name").toLowerCase();
+        String homeDirectory = System.getProperty("user.home", ".");
+        File localFile;
+        if(os.contains("win")) {
+            String roaming = System.getenv("APPDATA");
+            if(roaming != null) {
+                localFile = new File(roaming, ".openlauncher/");
+            } else {
+                localFile = new File(homeDirectory, ".openlauncher/");
+            }
+        } else if (os.contains("mac")) {
+            localFile = new File(homeDirectory, "Library/Application Support/openlauncher");
+        } else {
+            localFile = new File(homeDirectory, ".openlauncher/");
+        }
+        if ((!localFile.exists()) && (!localFile.mkdirs())) {
+            return null;
+        }
+        return localFile;
     }
 
     public static void initJson() {
@@ -113,7 +130,7 @@ public class Utilities {
         try
         {
             FileInputStream fis = new FileInputStream(profiles);
-            byte[] data = new byte[(int) fis.available()];
+            byte[] data = new byte[fis.available()];
             fis.read(data);
             fis.close();
             String jsonProfiles = new String(data, "UTF-8");
@@ -141,7 +158,7 @@ public class Utilities {
         try
         {
             FileInputStream fis = new FileInputStream(profiles);
-            byte[] data = new byte[(int) fis.available()];
+            byte[] data = new byte[fis.available()];
             fis.read(data);
             fis.close();
             String jsonProfiles = new String(data, "UTF-8");
@@ -162,7 +179,7 @@ public class Utilities {
         try
         {
             FileInputStream fis = new FileInputStream(profiles);
-            byte[] data = new byte[(int) fis.available()];
+            byte[] data = new byte[fis.available()];
             fis.read(data);
             fis.close();
             String jsonProfiles = new String(data, "UTF-8");
