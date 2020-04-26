@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import lombok.Getter;
@@ -14,6 +15,9 @@ import me.gledoussal.Main;
 import java.io.IOException;
 
 public class MainController {
+
+    @FXML
+    private Label titleLabel;
 
     @Getter @Setter @FXML private StackPane stackPane;
 
@@ -37,6 +41,7 @@ public class MainController {
 
     @FXML
     private void initialize() {
+        titleLabel.setText(Main.APPLICATION_TITLE);
         FXMLLoader loginFXMLLoader = new FXMLLoader(getClass().getResource("/views/login.fxml"));
         try {
             AppProperties.loadProperties();

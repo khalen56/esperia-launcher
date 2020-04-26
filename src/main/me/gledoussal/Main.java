@@ -23,6 +23,7 @@ import java.util.List;
 
 public class Main extends Application {
 
+    public static final String APPLICATION_TITLE = "Esperia Launcher";
     public static final String WEBSITE_URL = "https://www.esperia-rp.net/";
     private static final GameVersion VERSION = new GameVersion("1.12.2", GameType.V1_8_HIGHER);
 
@@ -81,7 +82,7 @@ public class Main extends Application {
         });
 
         primaryStage.initStyle(StageStyle.TRANSPARENT);
-        primaryStage.setTitle("Launcher Esperia");
+        primaryStage.setTitle(Main.APPLICATION_TITLE);
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/images/icon.png")));
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, 1200, 737));

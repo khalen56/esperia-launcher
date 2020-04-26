@@ -26,7 +26,7 @@
         </fill>
     </Rectangle>
     <ImageView layoutX="352.0" layoutY="50.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../images/esperia_logo.png" />
+        <Image url="@../images/logo.png" />
     </ImageView>
    <Label layoutX="473.0" layoutY="242.0" text="Connexion à mojang" textFill="WHITE">
       <font>

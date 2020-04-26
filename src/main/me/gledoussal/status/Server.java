@@ -11,13 +11,13 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class Esperia {
+public class Server {
     private static JsonObject serversState;
 
     private int playerCount;
     private boolean online;
 
-    public Esperia() {
+    public Server() {
         initServersState();
         playerCount = serversState.getAsJsonArray("players").size();
         online = serversState.get("online").getAsBoolean();

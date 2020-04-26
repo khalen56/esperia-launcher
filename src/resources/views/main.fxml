@@ -7,7 +7,7 @@
 <StackPane fx:id="stackPane" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.MainController">
     <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="35" minWidth="1200">
         <Pane minHeight="35.0" minWidth="1200.0" style="-fx-background-color: #00000050;">
-            <Label layoutX="15.0" layoutY="6.0" text="Launcher Esperia" textFill="WHITE" />
+            <Label fx:id="titleLabel" layoutX="15.0" layoutY="6.0" text="Launcher Esperia" textFill="WHITE" />
             <ImageView layoutX="1162.0" layoutY="5.0" onMouseReleased="#onExitClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
                 <Image url="@../images/close.png" />
             </ImageView>

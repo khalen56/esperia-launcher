@@ -20,7 +20,7 @@ import lombok.Setter;
 import me.gledoussal.AppProperties;
 import me.gledoussal.Main;
 import me.gledoussal.nologin.util.Utilities;
-import me.gledoussal.status.Esperia;
+import me.gledoussal.status.Server;
 import me.gledoussal.status.Mojang;
 
 import java.awt.*;
@@ -57,7 +57,7 @@ public class PlayController {
     public void initialize() {
 
         new Thread(() -> {
-            Esperia server = new Esperia();
+            Server server = new Server();
             if (server.isOnline()) {
                 Platform.runLater(() -> {
                     playersCountLabel.setText(server.getPlayerCount() + "/200");
@@ -97,7 +97,7 @@ public class PlayController {
             URI uri = null;
             switch (id) {
                 case "w":
-                    uri = new URI("https://esperia-rp.net");
+                    uri = new URI(Main.WEBSITE_URL);
                     break;
                 case "ds":
                     uri = new URI("https://discord.gg/GGxR2gK");

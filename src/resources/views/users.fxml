@@ -3,15 +3,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.paint.Color?>
 <Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.UsersController">
-    <ImageView fitHeight="64.0" layoutX="555.0" layoutY="99.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../images/esperia_short_logo.png" />
+    <ImageView fitHeight="64.0" layoutX="502.0" layoutY="99.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../images/logo.png" />
     </ImageView>
     <Label layoutX="527.0" layoutY="174.0" text="Qui est-ce ?" textFill="WHITE">
         <font>

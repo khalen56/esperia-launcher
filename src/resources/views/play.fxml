@@ -9,7 +9,7 @@
 
 <Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.PlayController">
     <ImageView fitHeight="64.0" layoutX="100.0" layoutY="99.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../images/esperia_logo.png" />
+        <Image url="@../images/logo.png" />
     </ImageView>
     <ImageView fx:id="playerImage" fitHeight="64.0" fitWidth="64.0" layoutX="1036.0" layoutY="100.0" onMouseReleased="#onPlayerImageClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
     </ImageView>
