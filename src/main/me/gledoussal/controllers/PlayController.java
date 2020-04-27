@@ -57,10 +57,10 @@ public class PlayController {
     public void initialize() {
 
         new Thread(() -> {
-            Server server = new Server();
+            Server server = new Server(Main.SERVER_IP, Main.SERVER_PORT);
             if (server.isOnline()) {
                 Platform.runLater(() -> {
-                    playersCountLabel.setText(server.getPlayerCount() + "/200");
+                    playersCountLabel.setText(server.getPlayersCount() + "/" + server.getMaxPlayers());
                 });
             } else {
                 Platform.runLater(() -> {

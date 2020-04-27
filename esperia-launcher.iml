@@ -56,5 +56,6 @@
     </orderEntry>
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.4" level="project" />
     <orderEntry type="library" name="com.google.code.gson:gson:2.8.6" level="project" />
+    <orderEntry type="library" name="MinecraftServerPing" level="project" />
   </component>
 </module>

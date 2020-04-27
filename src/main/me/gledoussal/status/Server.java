@@ -1,55 +1,31 @@
 package me.gledoussal.status;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import me.gledoussal.Main;
+import ch.jamiete.mcping.MinecraftPing;
+import ch.jamiete.mcping.MinecraftPingOptions;
+import ch.jamiete.mcping.MinecraftPingReply;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 
 public class Server {
-    private static JsonObject serversState;
+    private MinecraftPingReply response;
 
-    private int playerCount;
-    private boolean online;
-
-    public Server() {
-        initServersState();
-        playerCount = serversState.getAsJsonArray("players").size();
-        online = serversState.get("online").getAsBoolean();
-    }
-
-    /**
-     * @return le nombre de joueurs présents sur le serveur.
-     */
-    public String getPlayerCount() {
-        return this.playerCount + "";
-    }
-
-    /**
-     * @return {@code true} si le serveur est en ligne, {@code false} sinon.
-     */
-    public boolean isOnline() {
-        return this.online;
-    }
-
-    private static void initServersState() {
-        URL url = null;
+    public Server(String ip, int port) {
         try {
-            url = new URL(Main.WEBSITE_URL + "utils/status");
-            URLConnection request = url.openConnection();
-            request.connect();
-
-            JsonParser jp = new JsonParser();
-            JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-            serversState = root.getAsJsonObject();
+            response = new MinecraftPing().getPing(new MinecraftPingOptions().setHostname(ip).setPort(port));
         } catch (IOException e) {
-            e.printStackTrace();
+            response = null;
         }
+    }
 
+    public boolean isOnline() {
+        return response != null;
+    }
+
+    public int getPlayersCount() {
+        return response.getPlayers().getOnline();
+    }
+
+    public int getMaxPlayers() {
+        return response.getPlayers().getMax();
     }
 }

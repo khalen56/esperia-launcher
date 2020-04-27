@@ -25,6 +25,8 @@ public class Main extends Application {
 
     public static final String APPLICATION_TITLE = "Esperia Launcher";
     public static final String WEBSITE_URL = "https://www.esperia-rp.net/";
+    public static final String SERVER_IP = "esperia-rp.net";
+    public static final int SERVER_PORT = 25565;
     private static final GameVersion VERSION = new GameVersion("1.12.2", GameType.V1_8_HIGHER);
 
     public static final GameInfos INFOS = new GameInfos("esperia_beta", VERSION, new GameTweak[] { GameTweak.FORGE });
