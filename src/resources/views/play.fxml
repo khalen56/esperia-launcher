@@ -11,8 +11,6 @@
     <ImageView fitHeight="64.0" layoutX="100.0" layoutY="99.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
         <Image url="@../images/logo.png" />
     </ImageView>
-    <ImageView fx:id="playerImage" fitHeight="64.0" fitWidth="64.0" layoutX="1036.0" layoutY="100.0" onMouseReleased="#onPlayerImageClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
-    </ImageView>
     <Rectangle height="200.0" layoutY="537.0" width="1200.0">
         <fill>
             <LinearGradient endX="0.5343511313882493" endY="0.8969465585155342" startX="0.5343511541381137">
@@ -30,48 +28,65 @@
             </stops></LinearGradient>
         </fill>
     </Rectangle>
-   <Label layoutX="100.0" layoutY="624.0" text="JOUEURS" textFill="WHITE">
-      <font>
-         <Font name="System Bold" size="18.0" />
-      </font>
-   </Label>
-   <Label fx:id="playersCountLabel" layoutX="186.0" layoutY="627.0" textFill="WHITE" />
-   <Line endX="-100.0" endY="42.0" layoutX="350.0" layoutY="613.0" startX="-100.0" startY="6.0" stroke="WHITE" strokeWidth="2.0" />
-    <Label layoutX="270.0" layoutY="624.0" text="STATUT MOJANG" textFill="WHITE">
-        <font>
-            <Font name="System Bold" size="18.0" />
-        </font>
-    </Label>
-   <Circle fx:id="mojangStatusCircle" fill="WHITE" layoutX="442.0" layoutY="636.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+
    <Label fx:id="playerNameLabel" alignment="CENTER_RIGHT" layoutX="673.0" layoutY="118.0" minWidth="314.0" prefHeight="17.0" prefWidth="314.0" text="Label" textFill="WHITE">
       <font>
          <Font name="System Bold" size="18.0" />
       </font>
    </Label>
-    <Label layoutX="553.0" layoutY="613.0" onMouseReleased="#onPlayClicked" styleClass="hand, bigzoom" text="JOUER" textFill="WHITE">
-        <font>
-            <Font name="System Bold" size="30.0" />
-        </font>
-    </Label>
-    <Label fx:id="versionLabel" alignment="CENTER_RIGHT" layoutX="776.0" layoutY="629.0" prefHeight="17.0" prefWidth="314.0" textFill="WHITE" />
-    <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="181.0" onMouseReleased="#onOptionsClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
-        <Image url="@../images/settings.png" />
-    </ImageView>
-    <Line endX="-100.0" endY="42.0" layoutX="1148.0" layoutY="194.0" startX="-59.0" startY="42.0" stroke="WHITE" strokeWidth="2.0" />
-    <ImageView fx:id="w" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="251.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
-        <Image url="@../images/link.png" />
-    </ImageView>
-    <ImageView fx:id="ds" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="298" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
-        <Image url="@../images/discord.png" />
-    </ImageView>
-    <ImageView fx:id="tw" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="345" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
-        <Image url="@../images/twitter.png" />
-    </ImageView>
-    <ImageView fx:id="fb" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="397.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
-        <Image url="@../images/facebook.png" />
-    </ImageView>
-    <ImageView fx:id="yt" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="447.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
-        <Image url="@../images/youtube.png" />
-    </ImageView>
+
    <Label fx:id="updateLabel" layoutX="100.0" layoutY="687.0" textFill="WHITE" visible="false" />
+   <GridPane layoutX="98.0" layoutY="585.0" prefHeight="91.0" prefWidth="995.0">
+       <columnConstraints>
+           <ColumnConstraints percentWidth="40.0" />
+           <ColumnConstraints halignment="CENTER" percentWidth="20.0" />
+           <ColumnConstraints halignment="RIGHT" percentWidth="40.0" />
+       </columnConstraints>
+       <rowConstraints>
+           <RowConstraints valignment="CENTER" />
+       </rowConstraints>
+       <FlowPane hgap="15.0" GridPane.columnIndex="0" GridPane.vgrow="NEVER">
+           <Label text="JOUEURS" textFill="WHITE">
+               <font>
+                   <Font name="System Bold" size="18.0" />
+               </font>
+           </Label>
+           <Label fx:id="playersCountLabel" textFill="WHITE" />
+           <Line endX="-100.0" endY="42.0" startX="-100.0" startY="6.0" stroke="WHITE" strokeWidth="2.0" />
+           <Label text="STATUT MOJANG" textFill="WHITE">
+               <font>
+                   <Font name="System Bold" size="18.0" />
+               </font>
+           </Label>
+           <Circle fx:id="mojangStatusCircle" fill="WHITE" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+       </FlowPane>
+       <Label onMouseReleased="#onPlayClicked" styleClass="hand, bigzoom" text="JOUER" textFill="WHITE" GridPane.columnIndex="1">
+           <font>
+               <Font name="System Bold" size="30.0" />
+           </font>
+       </Label>
+       <Label fx:id="versionLabel" alignment="CENTER_RIGHT" textFill="WHITE" GridPane.columnIndex="2" />
+   </GridPane>
+    <FlowPane columnHalignment="CENTER" layoutX="1036.0" layoutY="100.0" orientation="VERTICAL" prefHeight="427.0" prefWidth="64.0" vgap="15.0">
+        <ImageView fx:id="playerImage" fitHeight="64.0" fitWidth="64.0" onMouseReleased="#onPlayerImageClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom" />
+        <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="181.0" onMouseReleased="#onOptionsClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
+            <Image url="@../images/settings.png" />
+        </ImageView>
+        <Line endX="-100.0" endY="42.0" startX="-59.0" startY="42.0" stroke="WHITE" strokeWidth="2.0" />
+        <ImageView fx:id="w" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
+            <Image url="@../images/link.png" />
+        </ImageView>
+        <ImageView fx:id="ds" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
+            <Image url="@../images/discord.png" />
+        </ImageView>
+        <ImageView fx:id="tw" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
+            <Image url="@../images/twitter.png" />
+        </ImageView>
+        <ImageView fx:id="fb" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="397.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
+            <Image url="@../images/facebook.png" />
+        </ImageView>
+        <ImageView fx:id="yt" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="447.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
+            <Image url="@../images/youtube.png" />
+        </ImageView>
+    </FlowPane>
 </Pane>
