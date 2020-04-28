@@ -6,9 +6,8 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
+<?import me.gledoussal.ui.*?>
 
-<?import me.gledoussal.ui.LabelHover?>
-<?import me.gledoussal.ui.ImageViewHover?>
 <Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.PlayController">
     <ImageView fitHeight="64.0" layoutX="100.0" layoutY="99.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
         <Image url="@../images/logo.png" />
@@ -47,7 +46,7 @@
        <rowConstraints>
            <RowConstraints valignment="CENTER" />
        </rowConstraints>
-       <FlowPane hgap="15.0" GridPane.columnIndex="0" GridPane.vgrow="NEVER">
+       <FlowPane alignment="CENTER_LEFT" hgap="15.0" prefHeight="46.0" prefWidth="461.0" GridPane.columnIndex="0">
            <Label text="JOUEURS" textFill="WHITE">
                <font>
                    <Font name="System Bold" size="18.0" />
@@ -62,11 +61,8 @@
            </Label>
            <Circle fx:id="mojangStatusCircle" fill="WHITE" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
        </FlowPane>
-       <LabelHover onMouseReleased="#onPlayClicked" styleClass="hand" text="JOUER" textFill="WHITE" GridPane.columnIndex="1">
-           <font>
-               <Font name="System Bold" size="30.0" />
-           </font>
-       </LabelHover>
+       <ButtonDecorated text="JOUER" textSize="30" GridPane.columnIndex="1" styleClass="hand" onMouseReleased="#onPlayClicked">
+       </ButtonDecorated>
        <Label fx:id="versionLabel" alignment="CENTER_RIGHT" textFill="WHITE" GridPane.columnIndex="2" />
    </GridPane>
     <FlowPane columnHalignment="CENTER" layoutX="1036.0" layoutY="100.0" orientation="VERTICAL" prefHeight="427.0" prefWidth="64.0" vgap="15.0">
