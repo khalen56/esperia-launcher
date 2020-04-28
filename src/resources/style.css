@@ -19,15 +19,3 @@ TextField, PasswordField {
 .underline {
     -fx-underline: true;
 }
-
-.zoom:hover {
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
-    -fx-scale-z: 1.1;
-}
-
-.bigzoom:hover {
-    -fx-scale-x: 1.2;
-    -fx-scale-y: 1.2;
-    -fx-scale-z: 1.2;
-}

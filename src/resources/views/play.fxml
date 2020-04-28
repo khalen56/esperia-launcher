@@ -7,6 +7,8 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
+<?import me.gledoussal.ui.LabelHover?>
+<?import me.gledoussal.ui.ImageViewHover?>
 <Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.PlayController">
     <ImageView fitHeight="64.0" layoutX="100.0" layoutY="99.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
         <Image url="@../images/logo.png" />
@@ -60,33 +62,33 @@
            </Label>
            <Circle fx:id="mojangStatusCircle" fill="WHITE" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
        </FlowPane>
-       <Label onMouseReleased="#onPlayClicked" styleClass="hand, bigzoom" text="JOUER" textFill="WHITE" GridPane.columnIndex="1">
+       <LabelHover onMouseReleased="#onPlayClicked" styleClass="hand" text="JOUER" textFill="WHITE" GridPane.columnIndex="1">
            <font>
                <Font name="System Bold" size="30.0" />
            </font>
-       </Label>
+       </LabelHover>
        <Label fx:id="versionLabel" alignment="CENTER_RIGHT" textFill="WHITE" GridPane.columnIndex="2" />
    </GridPane>
     <FlowPane columnHalignment="CENTER" layoutX="1036.0" layoutY="100.0" orientation="VERTICAL" prefHeight="427.0" prefWidth="64.0" vgap="15.0">
-        <ImageView fx:id="playerImage" fitHeight="64.0" fitWidth="64.0" onMouseReleased="#onPlayerImageClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom" />
-        <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="181.0" onMouseReleased="#onOptionsClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
+        <ImageViewHover fx:id="playerImage" fitHeight="64.0" fitWidth="64.0" onMouseReleased="#onPlayerImageClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand" />
+        <ImageViewHover fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="181.0" onMouseReleased="#onOptionsClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
             <Image url="@../images/settings.png" />
-        </ImageView>
+        </ImageViewHover>
         <Line endX="-100.0" endY="42.0" startX="-59.0" startY="42.0" stroke="WHITE" strokeWidth="2.0" />
-        <ImageView fx:id="w" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
+        <ImageViewHover fx:id="w" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
             <Image url="@../images/link.png" />
-        </ImageView>
-        <ImageView fx:id="ds" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
+        </ImageViewHover>
+        <ImageViewHover fx:id="ds" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
             <Image url="@../images/discord.png" />
-        </ImageView>
-        <ImageView fx:id="tw" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
+        </ImageViewHover>
+        <ImageViewHover fx:id="tw" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
             <Image url="@../images/twitter.png" />
-        </ImageView>
-        <ImageView fx:id="fb" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="397.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
+        </ImageViewHover>
+        <ImageViewHover fx:id="fb" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="397.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
             <Image url="@../images/facebook.png" />
-        </ImageView>
-        <ImageView fx:id="yt" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="447.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand, zoom">
+        </ImageViewHover>
+        <ImageViewHover fx:id="yt" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="447.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
             <Image url="@../images/youtube.png" />
-        </ImageView>
+        </ImageViewHover>
     </FlowPane>
 </Pane>

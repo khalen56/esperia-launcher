@@ -5,7 +5,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane fx:id="accountPane" prefHeight="160.0" prefWidth="160" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.AccountCardController" styleClass="hand, zoom">
+<?import me.gledoussal.ui.PaneHover?>
+<PaneHover fx:id="accountPane" prefHeight="160.0" prefWidth="160" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.AccountCardController" styleClass="hand">
    <children>
       <ImageView fx:id="accountImage" fitHeight="64.0" fitWidth="64.0" layoutX="68.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <Image url="@../images/add.png" />
@@ -16,4 +17,4 @@
          </font>
       </Label>
    </children>
-</Pane>
+</PaneHover>
