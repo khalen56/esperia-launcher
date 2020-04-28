@@ -14,11 +14,9 @@ public class ImageViewHover extends ImageView {
 
     public ImageViewHover() {
 
-        scaleTransition =
-                new ScaleTransition(Duration.millis(200), this);
+        scaleTransition = new ScaleTransition(Duration.millis(200), this);
         scaleTransition.setCycleCount(1);
-        scaleTransition
-                .setInterpolator(Interpolator.EASE_BOTH);
+        scaleTransition.setInterpolator(Interpolator.EASE_BOTH);
 
         expandToMaxProperty = new SimpleDoubleProperty(1.1);
 
