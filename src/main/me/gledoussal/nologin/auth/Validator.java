@@ -18,6 +18,7 @@
  */
 package me.gledoussal.nologin.auth;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import fr.litarvan.openauth.AuthPoints;
@@ -31,6 +32,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 
 public class Validator {
 
@@ -49,12 +51,12 @@ public class Validator {
 	 */
 	public boolean validateAccount(Account acc) 
 	{
-		try 
+		try
 		{
 			authenticator.validate(acc.getAccessToken());
 			return true;
-		} 
-		catch (AuthenticationException e) 
+		}
+		catch (AuthenticationException e)
 		{
 			return refreshToken(acc);
 		}
@@ -91,9 +93,16 @@ public class Validator {
 			fis.close();
 			String jsonProfiles = new String(data, "UTF-8");
 			JsonObject profilesObj = (JsonObject) (new JsonParser()).parse(jsonProfiles);
-			JsonObject profileObj = profilesObj.getAsJsonObject("authenticationDatabase").getAsJsonObject(response.getSelectedProfile().getId());
-			profileObj.remove("accessToken");
-			profileObj.addProperty("accessToken", response.getAccessToken());
+
+			for (Map.Entry<String, JsonElement> entry : profilesObj.getAsJsonObject("authenticationDatabase").entrySet()) {
+				String test = entry.getValue().getAsJsonObject().getAsJsonObject("profiles").getAsJsonObject(acc.getUUID()).get("displayName").getAsString();
+				if (test != null) {
+					JsonObject profileObj = profilesObj.getAsJsonObject("authenticationDatabase").getAsJsonObject(entry.getKey());
+					profileObj.remove("accessToken");
+					profileObj.addProperty("accessToken", response.getAccessToken());
+				}
+			}
+
 			FileWriter writer = new FileWriter(profiles);
 			writer.write(profilesObj.toString());
 			writer.close();

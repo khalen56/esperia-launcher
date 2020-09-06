@@ -8,10 +8,7 @@
 <?import javafx.scene.text.*?>
 
 <Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.UsersController">
-    <ImageView fitHeight="64.0" layoutX="502.0" layoutY="99.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../images/logo.png" />
-    </ImageView>
-    <Label layoutX="527.0" layoutY="174.0" text="Qui est-ce ?" textFill="WHITE">
+    <Label layoutX="64.0" layoutY="64.0" text="Qui est-ce ?" textFill="WHITE">
         <font>
             <Font size="28.0" />
         </font>

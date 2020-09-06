@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import lombok.Setter;
 import me.gledoussal.AppProperties;
 import me.gledoussal.Main;
@@ -59,8 +60,9 @@ public class PlayController {
         new Thread(() -> {
             Server server = new Server(Main.SERVER_IP, Main.SERVER_PORT);
             if (server.isOnline()) {
+                playersCountLabel.setFont(Font.font("Brown Regular"));
                 Platform.runLater(() -> {
-                    playersCountLabel.setText(server.getPlayersCount() + "/" + server.getMaxPlayers());
+                    playersCountLabel.setText(server.getPlayersCount() + " | " + server.getMaxPlayers());
                 });
             } else {
                 Platform.runLater(() -> {
@@ -79,6 +81,7 @@ public class PlayController {
 
         playerImage.setImage(new Image("https://www.esperia-rp.net/skins/avatar/minecraft/" + Utilities.formatUuid(Main.account.getUUID() + "/64")));
         playerNameLabel.setText(Main.account.getDisplayName());
+        playerNameLabel.setFont(Font.font("Brown Regular"));
 
         versionLabel.setText(Main.LAUNCHER_VERSION);
         checkLauncherUpdate();

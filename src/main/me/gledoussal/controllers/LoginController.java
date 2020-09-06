@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +24,7 @@ import java.util.List;
 public class LoginController {
 
     @FXML
-    private Label back;
+    private ImageView back;
 
     @FXML
     private TextField usernameField;
@@ -52,7 +53,7 @@ public class LoginController {
             clientToken = token;
         }
 
-        Main.accountList = new ArrayList<Account>();
+        Main.accountList = new ArrayList<>();
         List<Account> accounts = noLogin.getAccountManager().getAccounts();
         String defaultAccount = Utilities.getDefaultAccount();
         System.out.println("Comptes trouvés : " + accounts.size());
@@ -60,7 +61,7 @@ public class LoginController {
             if(noLogin.getValidator().validateAccount(acc)) {
                 Main.accountList.add(acc);
                 System.out.println(acc.getDisplayName() + " valide");
-                if (acc.getUUID().equals(defaultAccount)) {
+                if (acc.getUUID().equals(defaultAccount) || accounts.size() == 1) {
                     Main.account = acc;
                     System.out.println(acc.getDisplayName() + " est le compte par défaut");
                     back.setVisible(true);

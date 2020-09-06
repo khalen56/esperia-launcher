@@ -36,14 +36,14 @@ public class Utilities {
         if(os.contains("win")) {
             String roaming = System.getenv("APPDATA");
             if(roaming != null) {
-                localFile = new File(roaming, ".openlauncher/");
+                localFile = new File(roaming, ".minecraft/");
             } else {
-                localFile = new File(homeDirectory, ".openlauncher/");
+                localFile = new File(homeDirectory, ".minecraft/");
             }
         } else if (os.contains("mac")) {
-            localFile = new File(homeDirectory, "Library/Application Support/openlauncher");
+            localFile = new File(homeDirectory, "Library/Application Support/minecraft");
         } else {
-            localFile = new File(homeDirectory, ".openlauncher/");
+            localFile = new File(homeDirectory, ".minecraft/");
         }
         if ((!localFile.exists()) && (!localFile.mkdirs())) {
             return null;

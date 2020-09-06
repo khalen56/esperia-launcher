@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.scene.text.Font;
 import me.gledoussal.nologin.account.Account;
 
 import javax.swing.*;
@@ -38,7 +39,7 @@ public class Main extends Application {
     public static final File BETA_DIR = BETA_INFOS.getGameDir();
     public static final String BETA_UPDATE_URL = "https://testing.launcher.esperia-rp.net/";
 
-    public static final String LAUNCHER_VERSION = "1.2.2";
+    public static final String LAUNCHER_VERSION = "1.3";
     public static final String LAUNCHER_CHECK_URL = "https://launcher.esperia-rp.net/resources/launcher.version";
     public static final String LAUNCHER_DOWNLOAD_EXE_URL = "https://launcher.esperia-rp.net/resources/Esperia.exe";
     public static final String LAUNCHER_DOWNLOAD_JAR_URL = "https://launcher.esperia-rp.net/resources/Esperia.jar";
@@ -66,6 +67,8 @@ public class Main extends Application {
 
         DIR.mkdir();
 
+        Font.loadFont(getClass().getResourceAsStream("/fonts/BrownRegular.ttf"), 14);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Lulo.ttf"), 14);
         Parent root = FXMLLoader.load(getClass().getResource("/views/main.fxml"));
         root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
@@ -87,7 +90,9 @@ public class Main extends Application {
         primaryStage.setTitle(Main.APPLICATION_TITLE);
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/images/icon.png")));
         primaryStage.setResizable(false);
-        primaryStage.setScene(new Scene(root, 1200, 737));
+
+        Scene scene = new Scene(root, 1200, 737);
+        primaryStage.setScene(scene);
         primaryStage.show();
         Platform.runLater(root::requestFocus);
     }

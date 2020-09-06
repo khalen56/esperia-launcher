@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.text.Font;
 import lombok.Setter;
 import me.gledoussal.Main;
 import me.gledoussal.nologin.util.Utilities;
@@ -28,6 +29,7 @@ public class UsersController {
                 AccountCardController accountCardController = accountFXMLLoader.getController();
                 accountCardController.getAccountImage().setImage(new Image("https://www.esperia-rp.net/skins/avatar/minecraft/" + Utilities.formatUuid(acc.getUUID() + "/64")));
                 accountCardController.getAccountName().setText(acc.getDisplayName());
+                accountCardController.getAccountName().setFont(Font.font("Brown Regular"));
                 accountsContainer.getChildren().add(accountCardController.getAccountPane());
                 accountCardController.getAccountPane().setOnMouseReleased(event -> {
                     if (acc.getUUID() != Main.account.getUUID()) {
@@ -50,6 +52,7 @@ public class UsersController {
             AccountCardController accountCardController = accountFXMLLoader.getController();
             accountCardController.getAccountImage().setOpacity(.5);
             accountCardController.getAccountName().setText("Ajouter un compte");
+            accountCardController.getAccountName().setFont(Font.font("Brown Regular"));
             accountsContainer.getChildren().add(accountCardController.getAccountPane());
             accountCardController.getAccountPane().setOnMouseReleased(event -> {
                 mainController.loadAuth();

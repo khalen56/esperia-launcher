@@ -6,7 +6,6 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
-<?import me.gledoussal.ui.*?>
 
 <Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.LoginController">
     <Rectangle height="200.0" layoutY="537.0" width="1200.0">
@@ -26,7 +25,7 @@
                 </stops></LinearGradient>
         </fill>
     </Rectangle>
-    <ImageView layoutX="352.0" layoutY="50.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+    <ImageView fitHeight="64.0" layoutX="940.0" layoutY="64.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
         <Image url="@../images/logo.png" />
     </ImageView>
    <Label layoutX="473.0" layoutY="242.0" text="Connexion à mojang" textFill="WHITE">
@@ -36,12 +35,14 @@
    </Label>
    <TextField fx:id="usernameField" layoutX="438.0" layoutY="298.0" prefHeight="25.0" prefWidth="325.0" promptText="Email / Nom de compte" />
    <PasswordField fx:id="passwordField" layoutX="438.0" layoutY="348.0" prefHeight="25.0" prefWidth="325.0" promptText="Mot de passe" />
-    <ButtonDecorated alignment="CENTER" layoutX="529.0" layoutY="440.0" onMouseReleased="#onConnectClicked" styleClass="hand" text="Connexion" textSize="24" />
-    <Label fx:id="back" layoutX="574.0" layoutY="493.0" onMouseReleased="#onBackClicked" styleClass="hand" text="Retour" textFill="WHITE" visible="false">
-        <font>
-            <Font size="18.0" />
-        </font>
-    </Label>
+    <Button fx:id="loginBtn" alignment="CENTER" layoutX="529.0" layoutY="440.0" onMouseReleased="#onConnectClicked" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-padding: 5px 16px; -fx-border-width: 2px;" styleClass="hand" text="Connexion">
+      <font>
+         <Font name="Brown Regular" size="24.0" />
+      </font>
+    </Button>
+    <ImageView fx:id="back" layoutX="64.0" layoutY="637.0" onMouseReleased="#onBackClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand" visible="false">
+        <Image url="@../images/back.png" />
+    </ImageView>
    <CheckBox fx:id="rememberCheck" layoutX="438.0" layoutY="399.0" mnemonicParsing="false" text="Se souvenir" textFill="WHITE" />
    <Label fx:id="loginStatusLabel" layoutX="438.0" layoutY="476.0" maxWidth="325.0" wrapText="true" />
 
