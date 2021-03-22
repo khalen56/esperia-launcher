@@ -20,15 +20,39 @@ package me.gledoussal.nologin.account;
 
 public class Account
 {
-    private String uuid, displayName, accessToken, userId, username;
+    private String uuid, displayName, accessToken, userId, username, refreshToken;
+    private Boolean isMicrosoft;
+
+    public Account(String uuid, String displayName, String accessToken, String userId, String username) {
+        this.uuid = uuid;
+        this.displayName = displayName;
+        this.accessToken = accessToken;
+        this.userId = userId;
+        this.username = username;
+        this.isMicrosoft = false;
+        this.refreshToken = "";
+    }
     
-    public Account(String uuid, String displayName, String accessToken, String userId, String username)
+    public Account(String uuid, String displayName, String accessToken, String userId, String username, Boolean isMicrosoft)
     {
     	this.uuid = uuid;
     	this.displayName = displayName;
     	this.accessToken = accessToken;
     	this.userId = userId;
     	this.username = username;
+    	this.isMicrosoft = isMicrosoft;
+        this.refreshToken = "";
+    }
+
+    public Account(String uuid, String displayName, String accessToken, String userId, String username, Boolean isMicrosoft, String refreshToken)
+    {
+        this.uuid = uuid;
+        this.displayName = displayName;
+        this.accessToken = accessToken;
+        this.userId = userId;
+        this.username = username;
+        this.isMicrosoft = isMicrosoft;
+        this.refreshToken = refreshToken;
     }
     
     public String getUUID()
@@ -56,7 +80,23 @@ public class Account
     	return username;
     }
 
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
+
+	public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+	public Boolean isMicrosoft() {
+        return isMicrosoft;
+    }
+
+    public void setIsMicrosoft(boolean isMicrosoft) {
+        this.isMicrosoft = isMicrosoft;
+    }
 }

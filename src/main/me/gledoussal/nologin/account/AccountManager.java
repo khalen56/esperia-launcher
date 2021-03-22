@@ -72,7 +72,7 @@ public class AccountManager
 				accounts.add(new Account(profileKeys.get(0),
 						obj.get("profiles").getAsJsonObject().get(profileKeys.get(0)).getAsJsonObject().get("displayName").getAsString(),
 						obj.get("accessToken").getAsString(),
-						accountName, obj.get("username").getAsString()));
+						accountName, obj.get("username").getAsString(), obj.get("ms").getAsBoolean(), obj.get("refreshToken").getAsString()));
 			}
 		}
 		catch (ClassCastException e) {

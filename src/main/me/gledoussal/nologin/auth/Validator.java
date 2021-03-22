@@ -51,13 +51,17 @@ public class Validator {
 	 */
 	public boolean validateAccount(Account acc) 
 	{
-		try
-		{
-			authenticator.validate(acc.getAccessToken());
-			return true;
-		}
-		catch (AuthenticationException e)
-		{
+		if (!acc.isMicrosoft()) {
+			try
+			{
+				authenticator.validate(acc.getAccessToken());
+				return true;
+			}
+			catch (AuthenticationException e)
+			{
+				return refreshToken(acc);
+			}
+		} else {
 			return refreshToken(acc);
 		}
 	}
@@ -66,9 +70,15 @@ public class Validator {
 	{
 		try 
 		{
-			RefreshResponse response = authenticator.refresh(acc.getAccessToken(), getClientToken());
-			acc.setAccessToken(response.getAccessToken());
-			updateMcFile(acc, response);
+			if (!acc.isMicrosoft()) {
+				RefreshResponse response = authenticator.refresh(acc.getAccessToken(), getClientToken());
+				acc.setAccessToken(response.getAccessToken());
+				updateMcFile(acc, response);
+			} else {
+				Microsoft.refreshToken(acc);
+				updateMcFile(Microsoft.refreshToken(acc), null);
+			}
+
 			return true;
 		}
 		catch (AuthenticationException e) 
@@ -95,11 +105,13 @@ public class Validator {
 			JsonObject profilesObj = (JsonObject) (new JsonParser()).parse(jsonProfiles);
 
 			for (Map.Entry<String, JsonElement> entry : profilesObj.getAsJsonObject("authenticationDatabase").entrySet()) {
-				String test = entry.getValue().getAsJsonObject().getAsJsonObject("profiles").getAsJsonObject(acc.getUUID()).get("displayName").getAsString();
-				if (test != null) {
+				if (entry.getValue().getAsJsonObject().getAsJsonObject("profiles").getAsJsonObject(acc.getUUID()) != null) {
 					JsonObject profileObj = profilesObj.getAsJsonObject("authenticationDatabase").getAsJsonObject(entry.getKey());
-					profileObj.remove("accessToken");
-					profileObj.addProperty("accessToken", response.getAccessToken());
+
+					if (response != null) {
+						profileObj.remove("accessToken");
+						profileObj.addProperty("accessToken", response.getAccessToken());
+					}
 				}
 			}
 

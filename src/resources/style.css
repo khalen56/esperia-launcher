@@ -32,7 +32,7 @@ TextField, PasswordField {
     -fx-underline: true;
 }
 
-#playBtn, #loginBtn {
+#playBtn, #loginBtn, #loginMSBtn {
     -fx-background-color: transparent;
     -fx-text-fill: white;
     -fx-padding: 5px 16px;

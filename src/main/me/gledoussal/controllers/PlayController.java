@@ -25,6 +25,7 @@ import me.gledoussal.status.Server;
 import me.gledoussal.status.Mojang;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -70,13 +71,6 @@ public class PlayController {
                     playersCountLabel.setTextFill(Color.RED);
                 });
             }
-        }).start();
-
-        new Thread(() -> {
-            Mojang mojang = new Mojang();
-            Platform.runLater(() -> {
-                mojangStatusCircle.setFill(mojang.getStatusColor());
-            });
         }).start();
 
         playerImage.setImage(new Image("https://www.esperia-rp.net/skins/avatar/minecraft/" + Utilities.formatUuid(Main.account.getUUID() + "/64")));
@@ -205,6 +199,12 @@ public class PlayController {
                 profile = MinecraftLauncher.createExternalProfile(Main.INFOS, GameFolder.BASIC, authInfos);
             else
                 profile = MinecraftLauncher.createExternalProfile(Main.BETA_INFOS, GameFolder.BASIC, authInfos);
+
+            File discordRPC = new File(profile.getDirectory().toString() + "/mods/customdiscordrpc-2.21.jar");
+            System.out.println(discordRPC);
+            if (!System.getProperty("os.name").contains("Windows") && discordRPC.exists()) {
+                discordRPC.delete();
+            }
 
             String ram = AppProperties.properties.getProperty("ram", "2");
             profile.getVmArgs().addAll(Arrays.asList("-Xms" + ram + "G", "-Xmx" + ram + "G"));

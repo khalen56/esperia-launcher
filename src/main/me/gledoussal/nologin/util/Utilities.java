@@ -36,14 +36,14 @@ public class Utilities {
         if(os.contains("win")) {
             String roaming = System.getenv("APPDATA");
             if(roaming != null) {
-                localFile = new File(roaming, ".minecraft/");
+                localFile = new File(roaming, ".openlauncherlib/");
             } else {
-                localFile = new File(homeDirectory, ".minecraft/");
+                localFile = new File(homeDirectory, ".openlauncherlib/");
             }
         } else if (os.contains("mac")) {
-            localFile = new File(homeDirectory, "Library/Application Support/minecraft");
+            localFile = new File(homeDirectory, "Library/Application Support/openlauncherlib");
         } else {
-            localFile = new File(homeDirectory, ".minecraft/");
+            localFile = new File(homeDirectory, ".openlauncherlib/");
         }
         if ((!localFile.exists()) && (!localFile.mkdirs())) {
             return null;
@@ -77,6 +77,7 @@ public class Utilities {
         }
     }
 
+
     public static void addAccount(Account acc, AuthResponse response) {
         File profiles = new File(getMinecraftDirectory(), "launcher_profiles.json");
 
@@ -89,8 +90,10 @@ public class Utilities {
             String jsonProfiles = new String(data, "UTF-8");
             JsonObject profilesObj = (JsonObject) (new JsonParser()).parse(jsonProfiles);
 
-            profilesObj.remove("clientToken");
-            profilesObj.addProperty("clientToken", response.getClientToken());
+            if (response != null) {
+                profilesObj.remove("clientToken");
+                profilesObj.addProperty("clientToken", response.getClientToken());
+            }
 
             JsonObject authDbObj = profilesObj.getAsJsonObject("authenticationDatabase");
             authDbObj.remove(acc.getUserId());
@@ -98,6 +101,8 @@ public class Utilities {
             JsonObject userObj = new JsonObject();
             userObj.addProperty("accessToken", acc.getAccessToken());
             userObj.addProperty("username", acc.getUsername());
+            userObj.addProperty("ms", acc.isMicrosoft());
+            userObj.addProperty("refreshToken", acc.getRefreshToken());
 
             JsonObject userProfilesObj = new JsonObject();
             JsonObject userProfileObj = new JsonObject();

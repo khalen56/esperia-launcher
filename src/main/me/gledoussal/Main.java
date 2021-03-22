@@ -39,7 +39,7 @@ public class Main extends Application {
     public static final File BETA_DIR = BETA_INFOS.getGameDir();
     public static final String BETA_UPDATE_URL = "https://testing.launcher.esperia-rp.net/";
 
-    public static final String LAUNCHER_VERSION = "1.3";
+    public static final String LAUNCHER_VERSION = "1.4.0";
     public static final String LAUNCHER_CHECK_URL = "https://launcher.esperia-rp.net/resources/launcher.version";
     public static final String LAUNCHER_DOWNLOAD_EXE_URL = "https://launcher.esperia-rp.net/resources/Esperia.exe";
     public static final String LAUNCHER_DOWNLOAD_JAR_URL = "https://launcher.esperia-rp.net/resources/Esperia.jar";
@@ -50,8 +50,12 @@ public class Main extends Application {
     private double  xOffset = 0.0;
     private double  yOffset = 0.0;
 
+    public static Stage primaryStage = null;
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage stage) throws Exception{
+
+        Main.primaryStage = stage;
 
         if (System.getProperty("os.name").contains("Windows")) {
             if(System.getenv("ProgramFiles(x86)") != null) {
