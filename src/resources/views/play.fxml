@@ -8,79 +8,101 @@
 <?import javafx.scene.text.*?>
 <?import me.gledoussal.ui.*?>
 
-<Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.PlayController">
-    <ImageViewHover fx:id="playerImage" fitHeight="64.0" fitWidth="64.0" layoutX="64.0" layoutY="64.0" onMouseReleased="#onPlayerImageClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand" />
+<Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.2-internal"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.PlayController">
+    <ImageViewHover fx:id="playerImage" fitHeight="64.0" fitWidth="64.0" layoutX="64.0" layoutY="64.0"
+                    onMouseReleased="#onPlayerImageClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand"/>
 
-    <Label fx:id="playerNameLabel" layoutX="144.0" layoutY="86.0" minWidth="314.0" prefHeight="17.0" prefWidth="314.0" text="Label" textFill="WHITE">
+    <Label fx:id="playerNameLabel" layoutX="144.0" layoutY="86.0" minWidth="314.0" prefHeight="17.0" prefWidth="314.0"
+           text="Label" textFill="WHITE">
         <font>
-            <Font size="14.0" />
+            <Font size="14.0"/>
         </font>
     </Label>
 
 
-    <ImageView fitHeight="64.0" layoutX="940.0" layoutY="64.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../images/logo.png" />
+    <ImageView fitHeight="64.0" layoutX="940.0" layoutY="64.0" mouseTransparent="true" pickOnBounds="true"
+               preserveRatio="true">
+        <Image url="@../images/logo.png"/>
     </ImageView>
     <Rectangle height="200.0" layoutY="537.0" width="1200.0">
         <fill>
             <LinearGradient endX="0.5343511313882493" endY="0.8969465585155342" startX="0.5343511541381137">
-            <stops>
-               <Stop>
-                  <color>
-                     <Color opacity="0.0" />
-                  </color>
-               </Stop>
-               <Stop offset="1.0">
-                  <color>
-                     <Color />
-                  </color>
-               </Stop>
-            </stops></LinearGradient>
+                <stops>
+                    <Stop>
+                        <color>
+                            <Color opacity="0.0"/>
+                        </color>
+                    </Stop>
+                    <Stop offset="1.0">
+                        <color>
+                            <Color/>
+                        </color>
+                    </Stop>
+                </stops>
+            </LinearGradient>
         </fill>
     </Rectangle>
 
-   <Label fx:id="updateLabel" layoutX="64.0" layoutY="696.0" prefHeight="17.0" prefWidth="340.0" text="UPDATE STATUS" textFill="WHITE" visible="false" />
+    <Label fx:id="updateLabel" layoutX="64.0" layoutY="696.0" prefHeight="17.0" prefWidth="340.0" text="UPDATE STATUS"
+           textFill="WHITE" visible="false"/>
 
-       <FlowPane alignment="CENTER_LEFT" hgap="15.0" layoutX="64.0" layoutY="635.0" prefHeight="46.0" prefWidth="461.0" GridPane.columnIndex="0">
-           <Label text="Joueurs" textFill="WHITE">
-               <font>
-                   <Font name="System Bold" size="18.0" />
-               </font>
-           </Label>
-           <Label fx:id="playersCountLabel" textFill="WHITE" />
-           <Label text="Status Mojang" textFill="WHITE" visible="false">
-               <font>
-                   <Font name="System Bold" size="18.0" />
-               </font>
-           </Label>
-           <Circle fx:id="mojangStatusCircle" fill="WHITE" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false" />
-       </FlowPane>
-       <Button fx:id="playBtn" layoutX="935.0" layoutY="633.0" onMouseReleased="#onPlayClicked" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-padding: 5px 16px; -fx-border-width: 2px;" styleClass="hand" text="JOUER" GridPane.columnIndex="1">
-      <font>
-         <Font size="24.0" />
-      </font></Button>
-       <Label fx:id="versionLabel" alignment="CENTER_RIGHT" layoutX="822.0" layoutY="696.0" prefHeight="17.0" prefWidth="314.0" text="VERSION" textFill="WHITE" GridPane.columnIndex="2">
-      <font>
-         <Font size="11.0" />
-      </font></Label>
-    <FlowPane columnHalignment="CENTER" layoutX="1104.0" layoutY="223.0" orientation="VERTICAL" prefHeight="292.0" prefWidth="32.0" vgap="15.0">
-        <ImageViewHover fx:id="w" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
-            <Image url="@../images/link.png" />
+    <FlowPane alignment="CENTER_LEFT" hgap="15.0" layoutX="64.0" layoutY="635.0" prefHeight="46.0" prefWidth="461.0"
+              GridPane.columnIndex="0">
+        <Label text="Joueurs" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label fx:id="playersCountLabel" textFill="WHITE"/>
+        <Label text="Status Mojang" textFill="WHITE" visible="false">
+            <font>
+                <Font name="System Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Circle fx:id="mojangStatusCircle" fill="WHITE" radius="8.0" stroke="BLACK" strokeType="INSIDE"
+                strokeWidth="0.0" visible="false"/>
+    </FlowPane>
+    <Button fx:id="playBtn" layoutX="935.0" layoutY="633.0" onMouseReleased="#onPlayClicked"
+            style="-fx-background-color: transparent; -fx-text-fill: white; -fx-padding: 5px 16px; -fx-border-width: 2px;"
+            styleClass="hand" text="JOUER" GridPane.columnIndex="1">
+        <font>
+            <Font size="24.0"/>
+        </font>
+    </Button>
+    <Label fx:id="versionLabel" alignment="CENTER_RIGHT" layoutX="822.0" layoutY="696.0" prefHeight="17.0"
+           prefWidth="314.0" text="VERSION" textFill="WHITE" GridPane.columnIndex="2">
+        <font>
+            <Font size="11.0"/>
+        </font>
+    </Label>
+    <FlowPane columnHalignment="CENTER" layoutX="1104.0" layoutY="223.0" orientation="VERTICAL" prefHeight="292.0"
+              prefWidth="32.0" vgap="15.0">
+        <ImageViewHover fx:id="w" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked"
+                        pickOnBounds="true" preserveRatio="true" styleClass="hand">
+            <Image url="@../images/link.png"/>
         </ImageViewHover>
-        <ImageViewHover fx:id="ds" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
-            <Image url="@../images/discord.png" />
+        <ImageViewHover fx:id="ds" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked"
+                        pickOnBounds="true" preserveRatio="true" styleClass="hand">
+            <Image url="@../images/discord.png"/>
         </ImageViewHover>
-        <ImageViewHover fx:id="tw" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
-            <Image url="@../images/twitter.png" />
+        <ImageViewHover fx:id="tw" fitHeight="32.0" fitWidth="32.0" onMouseReleased="#onExternalLinkClicked"
+                        pickOnBounds="true" preserveRatio="true" styleClass="hand">
+            <Image url="@../images/twitter.png"/>
         </ImageViewHover>
-        <ImageViewHover fx:id="fb" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="397.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
-            <Image url="@../images/facebook.png" />
+        <ImageViewHover fx:id="fb" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="397.0"
+                        onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true"
+                        styleClass="hand">
+            <Image url="@../images/facebook.png"/>
         </ImageViewHover>
-        <ImageViewHover fx:id="yt" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="447.0" onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
-            <Image url="@../images/youtube.png" />
+        <ImageViewHover fx:id="yt" fitHeight="32.0" fitWidth="32.0" layoutX="1052.0" layoutY="447.0"
+                        onMouseReleased="#onExternalLinkClicked" pickOnBounds="true" preserveRatio="true"
+                        styleClass="hand">
+            <Image url="@../images/youtube.png"/>
         </ImageViewHover>
     </FlowPane>
-    <ImageViewHover fitHeight="32.0" fitWidth="32.0" layoutX="1104.0" layoutY="641.0" onMouseReleased="#onOptionsClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
-        <Image url="@../images/settings.png" />
+    <ImageViewHover fitHeight="32.0" fitWidth="32.0" layoutX="1104.0" layoutY="641.0"
+                    onMouseReleased="#onOptionsClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand">
+        <Image url="@../images/settings.png"/>
     </ImageViewHover>
 </Pane>

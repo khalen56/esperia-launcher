@@ -18,15 +18,17 @@
 TextField, PasswordField {
     -fx-border-color: white;
     -fx-text-fill: white;
-    -fx-border-width: 0 0 1 0; // top, right, bottom, left
-    -fx-background-color: transparent;
+    -fx-border-width: 0 0 1 0;
+/ / top, right, bottom, left -fx-background-color: transparent;
 }
 
 .hand:hover {
     -fx-cursor: hand;
 }
 
-.slider .axis { -fx-tick-label-fill: white; }
+.slider .axis {
+    -fx-tick-label-fill: white;
+}
 
 .underline {
     -fx-underline: true;

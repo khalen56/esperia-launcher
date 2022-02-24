@@ -7,7 +7,8 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.OptionsController">
+<Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.2-internal"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.OptionsController">
 
 
     <Rectangle height="200.0" layoutY="537.0" width="1200.0">
@@ -16,68 +17,76 @@
                 <stops>
                     <Stop>
                         <color>
-                            <Color opacity="0.0" />
+                            <Color opacity="0.0"/>
                         </color>
                     </Stop>
                     <Stop offset="1.0">
                         <color>
-                            <Color />
+                            <Color/>
                         </color>
                     </Stop>
-                </stops></LinearGradient>
+                </stops>
+            </LinearGradient>
         </fill>
     </Rectangle>
     <Label layoutX="64.0" layoutY="64.0" text="Paramètres" textFill="WHITE">
         <font>
-            <Font name="Brown Regular" size="22.65" />
+            <Font name="Brown Regular" size="22.65"/>
         </font>
     </Label>
     <FlowPane layoutX="412.0" layoutY="213.0" orientation="VERTICAL" prefHeight="312.0" prefWidth="320" vgap="15.0">
         <FlowPane hgap="16" prefWidth="320.0">
             <ImageView fitHeight="24.0" fitWidth="32.0" preserveRatio="true">
-                <Image url="@../images/ram.png" />
+                <Image url="@../images/ram.png"/>
             </ImageView>
             <Label text="Ram" textFill="WHITE">
                 <font>
-                    <Font name="Brown Regular" size="18.0" />
+                    <Font name="Brown Regular" size="18.0"/>
                 </font>
-        </Label>
+            </Label>
         </FlowPane>
-        <Slider fx:id="ramSlider" blockIncrement="1.0" majorTickUnit="1.0" max="12.0" min="1.0" minorTickCount="0" prefHeight="24.0" prefWidth="375.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" styleClass="slider" value="2.0" />
-        <CheckBox fx:id="betaCheckbox" mnemonicParsing="false" text="Utiliser la version beta" textFill="WHITE" visible="false" />
+        <Slider fx:id="ramSlider" blockIncrement="1.0" majorTickUnit="1.0" max="12.0" min="1.0" minorTickCount="0"
+                prefHeight="24.0" prefWidth="375.0" showTickLabels="true" showTickMarks="true" snapToTicks="true"
+                styleClass="slider" value="2.0"/>
+        <CheckBox fx:id="betaCheckbox" mnemonicParsing="false" text="Utiliser la version beta" textFill="WHITE"
+                  visible="false"/>
         <FlowPane hgap="16" prefWidth="320.0">
             <ImageView fitHeight="24.0" fitWidth="32.0" preserveRatio="true">
-                <Image url="@../images/folder.png" />
+                <Image url="@../images/folder.png"/>
             </ImageView>
-            <Label fx:id="game" onMouseReleased="#onOpenDir" styleClass="hand" text="Ouvrir le dossier d'esperia" textFill="WHITE">
+            <Label fx:id="game" onMouseReleased="#onOpenDir" styleClass="hand" text="Ouvrir le dossier d'esperia"
+                   textFill="WHITE">
                 <font>
-                    <Font name="Brown Regular" size="14.0" />
+                    <Font name="Brown Regular" size="14.0"/>
                 </font>
             </Label>
         </FlowPane>
         <FlowPane hgap="16" prefWidth="320.0">
             <ImageView fitHeight="24.0" fitWidth="32.0" preserveRatio="true">
-                <Image url="@../images/folder.png" />
+                <Image url="@../images/folder.png"/>
             </ImageView>
-            <Label fx:id="logs" onMouseReleased="#onOpenDir" styleClass="hand" text="Ouvrir le dossier des logs" textFill="WHITE">
+            <Label fx:id="logs" onMouseReleased="#onOpenDir" styleClass="hand" text="Ouvrir le dossier des logs"
+                   textFill="WHITE">
                 <font>
-                    <Font name="Brown Regular" size="14.0" />
+                    <Font name="Brown Regular" size="14.0"/>
                 </font>
             </Label>
         </FlowPane>
         <FlowPane hgap="16" prefWidth="320.0">
             <ImageView fitHeight="24.0" fitWidth="32.0" preserveRatio="true">
-                <Image url="@../images/folder.png" />
+                <Image url="@../images/folder.png"/>
             </ImageView>
-            <Label fx:id="crashlogs" onMouseReleased="#onOpenDir" styleClass="hand" text="Ouvrir le dossier des crashlogs" textFill="WHITE">
+            <Label fx:id="crashlogs" onMouseReleased="#onOpenDir" styleClass="hand"
+                   text="Ouvrir le dossier des crashlogs" textFill="WHITE">
                 <font>
-                    <Font name="Brown Regular" size="14.0" />
+                    <Font name="Brown Regular" size="14.0"/>
                 </font>
             </Label>
         </FlowPane>
     </FlowPane>
 
-    <ImageView layoutX="64.0" layoutY="637.0" onMouseReleased="#onSaveAndExit" pickOnBounds="true" preserveRatio="true" styleClass="hand">
-        <Image url="@../images/back.png" />
+    <ImageView layoutX="64.0" layoutY="637.0" onMouseReleased="#onSaveAndExit" pickOnBounds="true" preserveRatio="true"
+               styleClass="hand">
+        <Image url="@../images/back.png"/>
     </ImageView>
 </Pane>

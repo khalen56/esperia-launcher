@@ -17,9 +17,9 @@
         <dependency>
             <groupId>fr.litarvan</groupId>
             <artifactId>openauth</artifactId>
-            <version>1.0.4</version>
+            <version>1.1.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/openauth-1.0.4.jar</systemPath>
+            <systemPath>${project.basedir}/lib/openauth-1.1.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>fr.theshark34</groupId>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.4</version>
+            <version>1.18.22</version>
         </dependency>
     </dependencies>
     <build>

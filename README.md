@@ -1,6 +1,10 @@
 # Esperia Launcher
 
-A custom launcher for modded minecraft built with Java and JavaFX using [Litarvan](https://github.com/Litarvan)'s libraries [S-Update](https://github.com/Litarvan/S-Update), [OpenLauncherLib](https://github.com/Litarvan/OpenLauncherLib), [OpenAuth](https://github.com/Litarvan/OpenAuth) and [Lifok](https://github.com/Lifok)'s [NoLogin](https://github.com/Lifok/NoLogin). Design inspired by [HeliosLauncher](https://github.com/dscalzi/HeliosLauncher)
+A custom launcher for modded minecraft built with Java and JavaFX using [Litarvan](https://github.com/Litarvan)'s
+libraries [S-Update](https://github.com/Litarvan/S-Update)
+, [OpenLauncherLib](https://github.com/Litarvan/OpenLauncherLib), [OpenAuth](https://github.com/Litarvan/OpenAuth)
+and [Lifok](https://github.com/Lifok)'s [NoLogin](https://github.com/Lifok/NoLogin). Design inspired
+by [HeliosLauncher](https://github.com/dscalzi/HeliosLauncher)
 
 ## Screenshots
 
