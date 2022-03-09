@@ -19,7 +19,7 @@ TextField, PasswordField {
     -fx-border-color: white;
     -fx-text-fill: white;
     -fx-border-width: 0 0 1 0; // top, right, bottom, left
-    -fx-background-color: transparent;
+-fx-background-color: transparent;
 }
 
 .hand:hover {

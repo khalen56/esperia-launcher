@@ -7,14 +7,16 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.UsersController">
+<Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.2-internal"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.UsersController">
     <Label layoutX="64.0" layoutY="64.0" text="Qui est-ce ?" textFill="WHITE">
         <font>
-            <Font size="28.0" />
+            <Font size="28.0"/>
         </font>
     </Label>
-    <FlowPane fx:id="accountsContainer" alignment="CENTER" columnHalignment="CENTER" layoutX="142.0" layoutY="234.0" prefHeight="211.0" prefWidth="917.0">
-        
+    <FlowPane fx:id="accountsContainer" alignment="CENTER" columnHalignment="CENTER" layoutX="142.0" layoutY="234.0"
+              prefHeight="211.0" prefWidth="917.0">
+
     </FlowPane>
     <Rectangle height="200.0" layoutY="537.0" width="1200.0">
         <fill>
@@ -22,15 +24,16 @@
                 <stops>
                     <Stop>
                         <color>
-                            <Color opacity="0.0" />
+                            <Color opacity="0.0"/>
                         </color>
                     </Stop>
                     <Stop offset="1.0">
                         <color>
-                            <Color />
+                            <Color/>
                         </color>
                     </Stop>
-                </stops></LinearGradient>
+                </stops>
+            </LinearGradient>
         </fill>
     </Rectangle>
 </Pane>
