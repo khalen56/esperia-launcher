@@ -8,7 +8,7 @@
 <?import javafx.scene.text.*?>
 <?import me.gledoussal.ui.*?>
 
-<Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.PlayController">
+<Pane prefHeight="737" prefWidth="1200" xmlns="http://javafx.com/javafx/8.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.gledoussal.controllers.PlayController">
     <ImageViewHover fx:id="playerImage" fitHeight="64.0" fitWidth="64.0" layoutX="64.0" layoutY="64.0" onMouseReleased="#onPlayerImageClicked" pickOnBounds="true" preserveRatio="true" styleClass="hand" />
 
     <Label fx:id="playerNameLabel" layoutX="144.0" layoutY="86.0" minWidth="314.0" prefHeight="17.0" prefWidth="314.0" text="Label" textFill="WHITE">

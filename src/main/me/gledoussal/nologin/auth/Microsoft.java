@@ -2,7 +2,6 @@ package me.gledoussal.nologin.auth;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import me.gledoussal.Main;
 import me.gledoussal.nologin.account.Account;
 
 import java.io.BufferedReader;
@@ -96,7 +95,6 @@ public class Microsoft {
             String response = "";
             for (String line; (line = br.readLine()) != null; response += line);
 
-            System.out.println(response);
             return new Gson().fromJson(response, JsonObject.class);
 
 
@@ -227,7 +225,6 @@ public class Microsoft {
             String response = "";
             for (String line; (line = br.readLine()) != null; response += line);
 
-            System.out.println(response);
             return new Gson().fromJson(response, JsonObject.class);
 
 

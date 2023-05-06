@@ -46,8 +46,6 @@ public class PlayController {
     @FXML
     private ImageView playerImage;
     @FXML
-    private Circle mojangStatusCircle;
-    @FXML
     private Label playersCountLabel;
 
     @Setter
@@ -189,32 +187,36 @@ public class PlayController {
     }
 
     private void launch() {
-        try {
-            ExternalLaunchProfile profile;
-            ExternalLauncher mcLauncher;
-            AuthInfos authInfos = new AuthInfos(Main.account.getDisplayName(), Main.account.getAccessToken(),
-                    Main.account.getUUID());
 
-            if (!AppProperties.properties.getProperty("beta", "false").equals("true"))
-                profile = MinecraftLauncher.createExternalProfile(Main.INFOS, GameFolder.BASIC, authInfos);
-            else
-                profile = MinecraftLauncher.createExternalProfile(Main.BETA_INFOS, GameFolder.BASIC, authInfos);
+        Platform.runLater(() -> {
+            try {
+                ExternalLaunchProfile profile;
+                ExternalLauncher mcLauncher;
+                AuthInfos authInfos = new AuthInfos(Main.account.getDisplayName(), Main.account.getAccessToken(),
+                        Main.account.getUUID());
 
-            File discordRPC = new File(profile.getDirectory().toString() + "/mods/customdiscordrpc-2.21.jar");
-            System.out.println(discordRPC);
-            if (!System.getProperty("os.name").contains("Windows") && discordRPC.exists()) {
-                discordRPC.delete();
+                if (!AppProperties.properties.getProperty("beta", "false").equals("true"))
+                    profile = MinecraftLauncher.createExternalProfile(Main.INFOS, GameFolder.BASIC, authInfos);
+                else
+                    profile = MinecraftLauncher.createExternalProfile(Main.BETA_INFOS, GameFolder.BASIC, authInfos);
+
+                File discordRPC = new File(profile.getDirectory().toString() + "/mods/customdiscordrpc-2.21.jar");
+                System.out.println(discordRPC);
+                if (!System.getProperty("os.name").contains("Windows") && discordRPC.exists()) {
+                    discordRPC.delete();
+                }
+
+                String ram = AppProperties.properties.getProperty("ram", "2");
+                profile.getVmArgs().addAll(Arrays.asList("-Xms" + ram + "G", "-Xmx" + ram + "G"));
+                mcLauncher = new ExternalLauncher(profile);
+                mcLauncher.launch();
+
+                System.exit(0);
+            } catch (LaunchException exc) {
+                exc.printStackTrace();
             }
+        });
 
-            String ram = AppProperties.properties.getProperty("ram", "2");
-            profile.getVmArgs().addAll(Arrays.asList("-Xms" + ram + "G", "-Xmx" + ram + "G"));
-            mcLauncher = new ExternalLauncher(profile);
-            mcLauncher.launch();
-
-            System.exit(0);
-        } catch (LaunchException exc) {
-            exc.printStackTrace();
-        }
     }
 
     private void checkLauncherUpdate() {

@@ -1,19 +1,10 @@
 package me.gledoussal.controllers;
 
-import fr.litarvan.openauth.AuthPoints;
-import fr.litarvan.openauth.AuthenticationException;
-import fr.litarvan.openauth.Authenticator;
-import fr.litarvan.openauth.model.AuthAgent;
-import fr.litarvan.openauth.model.response.AuthResponse;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
@@ -33,22 +24,8 @@ public class LoginController {
     @FXML
     private ImageView back;
 
-    @FXML
-    private TextField usernameField;
-
-    @FXML
-    private TextField passwordField;
-
-    @FXML
-    private CheckBox rememberCheck;
-
-    @FXML
-    private Label loginStatusLabel;
-
     @Setter
     private MainController mainController;
-
-    private String clientToken = "";
 
     private final Pane msPane = new Pane();
     private final Stage msStage = new Stage();
@@ -57,24 +34,28 @@ public class LoginController {
 
     @FXML
     public void initialize() {
+
         NoLogin noLogin = new NoLogin();
         String token = Utilities.getClientToken();
         if (token != null) {
-            clientToken = token;
         }
 
         Main.accountList = new ArrayList<>();
         List<Account> accounts = noLogin.getAccountManager().getAccounts();
         String defaultAccount = Utilities.getDefaultAccount();
         System.out.println("Comptes trouvés : " + accounts.size());
+
+        if (Main.account != null) {
+            back.setVisible(true);
+        }
+
         for(Account acc : accounts) {
-            if(noLogin.getValidator().validateAccount(acc)) {
+            if(Main.account != null || noLogin.getValidator().validateAccount(acc)) {
                 Main.accountList.add(acc);
                 System.out.println(acc.getDisplayName() + " valide");
-                if (acc.getUUID().equals(defaultAccount) || accounts.size() == 1) {
+                if (Main.account == null && (acc.getUUID().equals(defaultAccount) || accounts.size() == 1)) {
                     Main.account = acc;
                     System.out.println(acc.getDisplayName() + " est le compte par défaut");
-                    back.setVisible(true);
                 }
             } else {
                 System.out.println(acc.getDisplayName() + " invalide");
@@ -88,52 +69,10 @@ public class LoginController {
         msStage.setScene(msScene);
     }
 
-    public void onConnectClicked() {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        Boolean remember = rememberCheck.isSelected();
-
-        if (!username.isEmpty() && !password.isEmpty()) {
-            auth(username, password, remember);
-        } else {
-            loginStatusLabel.setText("Merci de remplir le nom d'utilisateur et le mot de passe.");
-            loginStatusLabel.setTextFill(Color.RED);
-        }
-    }
-
-    private void auth(String username, String password, Boolean remember) {
-        Authenticator authenticator = new Authenticator(Authenticator.MOJANG_AUTH_URL, AuthPoints.NORMAL_AUTH_POINTS);
-        AuthResponse response;
-
-        try {
-            response = authenticator.authenticate(AuthAgent.MINECRAFT, username, password, clientToken);
-            Account account = new Account(response.getSelectedProfile().getId(),
-                    response.getSelectedProfile().getName(), response.getAccessToken(),
-                    response.getSelectedProfile().getId(), username);
-
-            Main.account = account;
-
-            if (remember) {
-                Main.accountList.add(account);
-                System.out.println("Nombre de comptes : " + Main.accountList.size());
-                Utilities.addAccount(account, response);
-                Utilities.updateDefaultAccount(account);
-            }
-
-            mainController.onAuthCompleted();
-        } catch (AuthenticationException e) {
-            e.printStackTrace();
-            loginStatusLabel.setText(e.getMessage());
-            loginStatusLabel.setTextFill(Color.RED);
-        }
-    }
-
     @FXML
     private void onBackClicked() {
         mainController.reopenPlay();
     }
-
-    private Scene msScene;
 
     private static final String loginUrl = "https://login.live.com/oauth20_authorize.srf" +
             "?client_id=00000000402b5328" +
@@ -166,7 +105,7 @@ public class LoginController {
 
                         Main.account = Microsoft.auth(authCode);
                         Main.accountList.add(Main.account);
-                        Utilities.addAccount(Main.account, null);
+                        Utilities.addAccount(Main.account);
                         Utilities.updateDefaultAccount(Main.account);
                         mainController.onAuthCompleted();
 

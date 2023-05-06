@@ -40,6 +40,11 @@ TextField, PasswordField {
     -fx-border-color: white;
 }
 
-#playBtn:hover, #loginBtn:hover {
+#playBtn:hover, #loginBtn:hover, #loginMSBtn:hover {
     -fx-border-color: #ffae00;
+}
+
+#directLabel {
+    -fx-font-family: "Lulo";
+    -fx-text-fill: #ffae00;
 }
