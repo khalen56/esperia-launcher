@@ -24,7 +24,7 @@
     <BorderPane fx:id="loadingPane" prefHeight="737" prefWidth="1200">
         <center>
             <VBox alignment="CENTER" spacing="10">
-                <Label fx:id="loadingMessage" textFill="WHITE" style="-fx-font-weight: bold;">
+                <Label fx:id="loadingMessage" textFill="WHITE" style="-fx-font-weight: bold; -fx-text-alignment: center;">
                     <font>
                         <Font size="20.0" />
                     </font>

@@ -19,14 +19,20 @@
 package me.gledoussal.nologin;
 
 import lombok.Getter;
+import me.gledoussal.controllers.MainController;
 import me.gledoussal.nologin.account.AccountManager;
 import me.gledoussal.nologin.auth.Validator;
 import me.gledoussal.nologin.util.Utilities;
 
-public class NoLogin 
+public class NoLogin
 {
 	@Getter
 	private AccountManager accountManager = new AccountManager();
 	@Getter
 	private Validator validator = new Validator();
+
+
+	public NoLogin(MainController mainController) {
+		validator.setMainController(mainController);
+	}
 }

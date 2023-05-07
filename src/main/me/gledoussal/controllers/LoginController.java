@@ -1,8 +1,10 @@
 package me.gledoussal.controllers;
 
 
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -20,6 +22,7 @@ import me.gledoussal.nologin.util.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class LoginController {
 
@@ -29,48 +32,29 @@ public class LoginController {
     @Setter
     private MainController mainController;
 
+    private Microsoft microsoft = new Microsoft();
+
     private final Pane msPane = new Pane();
     private final Stage msStage = new Stage();
-
-    private LoginTaskDelegate loginTaskDelegate;
-
     @FXML
     public void initialize() {
         // Créer et démarrer la tâche de chargement des comptes
-        Task<Void> loadAccountsTask = createLoadAccountsTask();
-        loadAccountsTask.setOnSucceeded(event -> {
-
-            loginTaskDelegate.onLoginTaskCompleted();
-
-            msStage.initModality(Modality.APPLICATION_MODAL);
-            msStage.initOwner(Main.primaryStage);
-        });
-        loadAccountsTask.setOnFailed(event -> {
-            // Gérer les erreurs ici, si nécessaire
-        });
+        Task<Void> loadAccountsTask = new Task<Void>() {
+            @Override
+            protected Void call() {
+                loadAccounts();
+                return null;
+            }
+        };
+        loadAccountsTask.setOnSucceeded(event -> { mainController.onLoginTaskCompleted(); });
         new Thread(loadAccountsTask).start();
     }
 
 
-    private Task<Void> createLoadAccountsTask() {
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() {
-                loadAccounts();
-                System.out.println("Comptes chargés");
-                return null;
-            }
-        };
-        return task;
-    }
-
-
     private void loadAccounts() {
-        NoLogin noLogin = new NoLogin();
-        String token = Utilities.getClientToken();
-        if (token != null) {
-        }
-        loginTaskDelegate.updateLoadingMessage("Connexion en cours");
+        NoLogin noLogin = new NoLogin(mainController);
+
+        mainController.setLoadingMessage("Connexion en cours");
         Main.accountList = new ArrayList<>();
         List<Account> accounts = noLogin.getAccountManager().getAccounts();
         String defaultAccount = Utilities.getDefaultAccount();
@@ -92,7 +76,6 @@ public class LoginController {
                 System.out.println(acc.getDisplayName() + " invalide");
             }
         }
-
     }
 
     @FXML
@@ -110,52 +93,67 @@ public class LoginController {
 
 
     public void onConnectMSClicked() {
-        Pane newMsPane = new Pane(); // Créer un nouveau Pane à chaque appel
-        Scene msScene = new Scene(newMsPane, 500, 700);
-        msStage.setScene(msScene);
+        // Créer et démarrer la tâche de connexion à Microsoft
+        Task<Void> connectToMicrosoftTask = new Task<Void>() {
+            @Override
+            protected Void call() {
+                connectToMicrosoft();
+                return null;
+            }
+        };
 
-        newMsPane.getChildren().clear();
+        connectToMicrosoftTask.setOnSucceeded(event -> { mainController.onAuthCompleted(); });
+        new Thread(connectToMicrosoftTask).start();
+    }
 
-        WebView webView = new WebView();
-        webView.getEngine().load(loginUrl);
-        webView.getEngine().setJavaScriptEnabled(true);
-        webView.setPrefHeight(700);
-        webView.setPrefWidth(500);
+    private void connectToMicrosoft() {
+        // On met un CountDownLatch pour attendre que l'utilisateur se connecte avant de terminer la tâche
+        CountDownLatch latch = new CountDownLatch(1);
 
-        java.net.CookieHandler.setDefault(new com.sun.webkit.network.CookieManager());
+        Platform.runLater(() -> {
+            Pane newMsPane = new Pane();
+            Scene msScene = new Scene(newMsPane, 500, 700);
+            msStage.setScene(msScene);
 
-        webView.getEngine().getHistory().getEntries().addListener((ListChangeListener<WebHistory.Entry>) c -> {
-            if (c.next() && c.wasAdded()) {
-                for (WebHistory.Entry entry : c.getAddedSubList()) {
-                    if (entry.getUrl().startsWith(redirectUrlSuffix)) {
+            newMsPane.getChildren().clear();
 
-                        msStage.hide();
-                        String authCode = entry.getUrl().substring(entry.getUrl().indexOf("=") + 1, entry.getUrl().indexOf("&"));
-                        // once we got the auth code, we can turn it into a oauth token
+            WebView webView = new WebView();
+            webView.getEngine().load(loginUrl);
+            webView.getEngine().setJavaScriptEnabled(true);
+            webView.setPrefHeight(700);
+            webView.setPrefWidth(500);
 
-                        Main.account = Microsoft.auth(authCode);
-                        Main.accountList.add(Main.account);
-                        Utilities.addAccount(Main.account);
-                        Utilities.updateDefaultAccount(Main.account);
-                        mainController.onAuthCompleted();
+            java.net.CookieHandler.setDefault(new com.sun.webkit.network.CookieManager());
 
+            webView.getEngine().getHistory().getEntries().addListener((ListChangeListener<WebHistory.Entry>) c -> {
+                if (c.next() && c.wasAdded()) {
+                    for (WebHistory.Entry entry : c.getAddedSubList()) {
+                        if (entry.getUrl().startsWith(redirectUrlSuffix)) {
+
+                            msStage.hide();
+                            String authCode = entry.getUrl().substring(entry.getUrl().indexOf("=") + 1, entry.getUrl().indexOf("&"));
+
+                            microsoft.setMainController(mainController);
+                            Main.account = microsoft.auth(authCode);
+                            Main.accountList.add(Main.account);
+                            Utilities.addAccount(Main.account);
+                            Utilities.updateDefaultAccount(Main.account);
+
+                            latch.countDown(); // Décrémenter le compteur du CountDownLatch
+                        }
                     }
                 }
-            }
+            });
+
+            newMsPane.getChildren().add(webView);
+
+            msStage.show();
         });
 
-        newMsPane.getChildren().add(webView);
-
-        msStage.show();
+        try {
+            latch.await(); // Attendre que le CountDownLatch atteigne zéro
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
-
-    public interface LoginTaskDelegate {
-        void onLoginTaskCompleted();
-        void updateLoadingMessage(String message);
-    }
-
-    public void setLoginTaskDelegate(LoginTaskDelegate loginTaskDelegate) {
-        this.loginTaskDelegate = loginTaskDelegate;
-    }
-
 }

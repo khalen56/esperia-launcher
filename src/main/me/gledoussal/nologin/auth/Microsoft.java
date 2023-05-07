@@ -2,6 +2,8 @@ package me.gledoussal.nologin.auth;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import lombok.Setter;
+import me.gledoussal.controllers.MainController;
 import me.gledoussal.nologin.account.Account;
 
 import java.io.BufferedReader;
@@ -22,7 +24,9 @@ public class Microsoft {
     private static final String mcStoreUrl = "https://api.minecraftservices.com/entitlements/mcstore";
     private static final String mcProfileUrl = "https://api.minecraftservices.com/minecraft/profile";
 
-    public static Account auth(String authCode) {
+    private MainController mainController;
+
+    public Account auth(String authCode) {
 
         JsonObject accessTokenJson = getAccessToken(authCode);
 
@@ -31,6 +35,13 @@ public class Microsoft {
 
         String uhs = xstsJson.get("DisplayClaims").getAsJsonObject().get("xui").getAsJsonArray().get(0).getAsJsonObject().get("uhs").getAsString();
         JsonObject minecraftJson = acquireMinecraftToken(uhs, xstsJson.get("Token").getAsString());
+
+        while (minecraftJson.get("access_token") == null) {
+            System.out.println("Impossible de joindre l'API Minecraft. Nouvelle tentative dans 5 secondes.");
+            minecraftJson = acquireMinecraftToken(uhs, xstsJson.get("Token").getAsString());
+            // On attend 5 secondes avant de refaire une demande de token
+            try { Thread.sleep(5000); } catch (InterruptedException e) { throw new RuntimeException(e); }
+        }
 
         if (ownGame(minecraftJson.get("access_token").getAsString())) {
             JsonObject mcProfileJson = getMcProfile(minecraftJson.get("access_token").getAsString());
@@ -51,7 +62,8 @@ public class Microsoft {
         return null;
     }
 
-    public static Account refreshToken(Account account) {
+    public Account refreshToken(Account account) {
+        mainController.setLoadingMessage("Connexion en cours");
         JsonObject accessTokenJson = getAccessToken(account.getRefreshToken(), "refresh_token");
 
         JsonObject xblAuthJson = xblAuth(accessTokenJson.get("access_token").getAsString());
@@ -74,6 +86,7 @@ public class Microsoft {
 
             // Tant que le token n'est pas valide, on le renouvelle toutes les 5 secondes
             while (minecraftJson.get("access_token") == null) {
+                mainController.setLoadingMessage("Impossible de joindre l'API Minecraft.\nVeuillez patienter.");
                 System.out.println("Impossible de joindre l'API Minecraft. Nouvelle tentative dans 5 secondes.");
                 minecraftJson = acquireMinecraftToken(uhs, xstsJson.get("Token").getAsString());
                 // On attend 5 secondes avant de refaire une demande de token
@@ -85,6 +98,7 @@ public class Microsoft {
         } else {
             System.out.println("Token valide. Pas de renouvellement.");
         }
+        mainController.setLoadingMessage("Connexion réussie.");
 
         return account;
     }
@@ -325,5 +339,9 @@ public class Microsoft {
         }
 
         return null;
+    }
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
     }
 }

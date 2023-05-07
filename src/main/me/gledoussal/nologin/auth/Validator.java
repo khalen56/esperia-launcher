@@ -21,6 +21,7 @@ package me.gledoussal.nologin.auth;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import me.gledoussal.controllers.MainController;
 import me.gledoussal.nologin.account.Account;
 import me.gledoussal.nologin.util.Utilities;
 
@@ -33,6 +34,10 @@ import java.util.Map;
 public class Validator {
 
 	private String clientToken;
+
+	private MainController mainController;
+
+	private Microsoft microsoft = new Microsoft();
 
 	public Validator() 
 	{
@@ -51,7 +56,7 @@ public class Validator {
 
 	private boolean refreshToken(Account acc)
 	{
-		updateMcFile(Microsoft.refreshToken(acc));
+		updateMcFile(microsoft.refreshToken(acc));
 		return true;
 	}
 
@@ -96,5 +101,9 @@ public class Validator {
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public void setMainController(MainController mainController) {
+		microsoft.setMainController(mainController);
 	}
 }

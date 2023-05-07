@@ -17,7 +17,7 @@ import me.gledoussal.Main;
 import java.io.IOException;
 import java.util.Stack;
 
-public class MainController implements LoginController.LoginTaskDelegate {
+public class MainController {
 
     @FXML
     private Label titleLabel;
@@ -47,6 +47,8 @@ public class MainController implements LoginController.LoginTaskDelegate {
     @Getter @Setter
     private Node optionsNode;
 
+    private boolean accountsLoaded = false;
+
     @FXML
     private void initialize() {
         titleLabel.setText(Main.APPLICATION_TITLE);
@@ -56,9 +58,7 @@ public class MainController implements LoginController.LoginTaskDelegate {
 
             this.loginNode = loginFXMLLoader.load();
             this.loginPaneController = loginFXMLLoader.getController();
-
             this.loginPaneController.setMainController(this);
-            this.loginPaneController.setLoginTaskDelegate(this);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -78,6 +78,7 @@ public class MainController implements LoginController.LoginTaskDelegate {
     }
 
     public void onAuthCompleted() {
+        setLoadingPaneVisible(false);
         FXMLLoader loginFXMLLoader = new FXMLLoader(getClass().getResource("/views/play.fxml"));
         try {
             this.playNode = loginFXMLLoader.load();
@@ -129,15 +130,17 @@ public class MainController implements LoginController.LoginTaskDelegate {
         }
     }
 
-    @Override
     public void onLoginTaskCompleted() {
         Platform.runLater(() -> {
-            loadingPane.setVisible(false);
-            if (Main.account == null) {
-                this.loadPane(loginNode);
-            } else {
-                this.onAuthCompleted();
+            setLoadingPaneVisible(false);
+            if(!accountsLoaded) {
+                if (Main.account == null) {
+                    this.loadPane(loginNode);
+                } else {
+                    this.onAuthCompleted();
+                }
             }
+            accountsLoaded = true;
         });
     }
 
@@ -147,8 +150,9 @@ public class MainController implements LoginController.LoginTaskDelegate {
         });
     }
 
-    @Override
-    public void updateLoadingMessage(String message) {
-        setLoadingMessage(message);
+    public void setLoadingPaneVisible(boolean visible) {
+        Platform.runLater(() -> {
+            loadingPane.setVisible(visible);
+        });
     }
 }
