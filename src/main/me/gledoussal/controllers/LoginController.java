@@ -44,9 +44,6 @@ public class LoginController {
 
             msStage.initModality(Modality.APPLICATION_MODAL);
             msStage.initOwner(Main.primaryStage);
-
-            Scene msScene = new Scene(msPane, 500, 700);
-            msStage.setScene(msScene);
         });
         loadAccountsTask.setOnFailed(event -> {
             // Gérer les erreurs ici, si nécessaire
@@ -113,10 +110,11 @@ public class LoginController {
 
 
     public void onConnectMSClicked() {
-        msPane.getChildren().clear();
+        Pane newMsPane = new Pane(); // Créer un nouveau Pane à chaque appel
+        Scene msScene = new Scene(newMsPane, 500, 700);
+        msStage.setScene(msScene);
 
-        System.out.println("Opening Microsoft login page");
-        System.out.println("URL: " + loginUrl);
+        newMsPane.getChildren().clear();
 
         WebView webView = new WebView();
         webView.getEngine().load(loginUrl);
@@ -146,7 +144,7 @@ public class LoginController {
             }
         });
 
-        msPane.getChildren().add(webView);
+        newMsPane.getChildren().add(webView);
 
         msStage.show();
     }

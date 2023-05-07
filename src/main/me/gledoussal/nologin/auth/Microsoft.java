@@ -43,8 +43,7 @@ public class Microsoft {
                     mcProfileJson.get("name").getAsString(),
                     true,
                     accessTokenJson.get("refresh_token").getAsString(),
-                    // Renvoie mcProfileJson.get("lastTokenRefresh") en long
-                    new Timestamp(System.currentTimeMillis()).getTime()
+                    new Timestamp(System.currentTimeMillis()).getTime() // On enregistre le timestamp de la dernière connexion
             );
 
         }
@@ -66,12 +65,10 @@ public class Microsoft {
         // Si le lastTokenRefresh est supérieur à 24h, on refait une demande de token
         // Sinon, on ne fait rien car le token est toujours valide (durée de validité de 24h soit 86400000ms)
 
-        if (System.currentTimeMillis() - account.getLastTokenRefresh() > 5000) {
+        if (System.currentTimeMillis() - account.getLastTokenRefresh() > 86400000) {
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
             System.out.println("Token expiré. Renouvellement...");
-//            acquireMinecraftToken(uhs, xstsJson.get("Token").getAsString());
-//            acquireMinecraftToken(uhs, xstsJson.get("Token").getAsString());
 
             JsonObject minecraftJson = acquireMinecraftToken(uhs, xstsJson.get("Token").getAsString());
 
