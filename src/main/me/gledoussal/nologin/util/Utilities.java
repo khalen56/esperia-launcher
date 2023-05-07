@@ -25,6 +25,7 @@ import me.gledoussal.nologin.account.Account;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.sql.Timestamp;
 
 public class Utilities {
 
@@ -93,7 +94,9 @@ public class Utilities {
             authDbObj.remove(acc.getUserId());
 
             JsonObject userObj = new JsonObject();
+            Timestamp now = new Timestamp(System.currentTimeMillis());
             userObj.addProperty("accessToken", acc.getAccessToken());
+            userObj.addProperty("lastTokenRefresh", now.getTime());
             userObj.addProperty("username", acc.getUsername());
             userObj.addProperty("ms", acc.isMicrosoft());
             userObj.addProperty("refreshToken", acc.getRefreshToken());

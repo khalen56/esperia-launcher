@@ -23,6 +23,8 @@ public class Account
     private String uuid, displayName, accessToken, userId, username, refreshToken;
     private Boolean isMicrosoft;
 
+    private long lastTokenRefresh;
+
     public Account(String uuid, String displayName, String accessToken, String userId, String username) {
         this.uuid = uuid;
         this.displayName = displayName;
@@ -44,7 +46,7 @@ public class Account
         this.refreshToken = "";
     }
 
-    public Account(String uuid, String displayName, String accessToken, String userId, String username, Boolean isMicrosoft, String refreshToken)
+    public Account(String uuid, String displayName, String accessToken, String userId, String username, Boolean isMicrosoft, String refreshToken, long lastTokenRefresh)
     {
         this.uuid = uuid;
         this.displayName = displayName;
@@ -53,6 +55,7 @@ public class Account
         this.username = username;
         this.isMicrosoft = isMicrosoft;
         this.refreshToken = refreshToken;
+        this.lastTokenRefresh = lastTokenRefresh;
     }
     
     public String getUUID()
@@ -99,4 +102,8 @@ public class Account
     public void setIsMicrosoft(boolean isMicrosoft) {
         this.isMicrosoft = isMicrosoft;
     }
+
+    public long getLastTokenRefresh() { return lastTokenRefresh; }
+
+    public void setLastTokenRefresh(long lastTokenRefresh) { this.lastTokenRefresh = lastTokenRefresh; }
 }

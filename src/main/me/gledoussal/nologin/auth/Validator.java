@@ -78,6 +78,11 @@ public class Validator {
 					profileObj.remove("accessToken");
 					profileObj.addProperty("accessToken", acc.getAccessToken());
 
+					if (acc.getLastTokenRefresh() != 0) {
+						profileObj.remove("lastTokenRefresh");
+						profileObj.addProperty("lastTokenRefresh", acc.getLastTokenRefresh());
+					}
+
 					profileObj.remove("refreshToken");
 					profileObj.addProperty("refreshToken", acc.getRefreshToken());
 				}

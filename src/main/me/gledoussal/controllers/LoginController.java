@@ -1,6 +1,8 @@
 package me.gledoussal.controllers;
 
+
 import javafx.collections.ListChangeListener;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -30,16 +32,48 @@ public class LoginController {
     private final Pane msPane = new Pane();
     private final Stage msStage = new Stage();
 
-
+    private LoginTaskDelegate loginTaskDelegate;
 
     @FXML
     public void initialize() {
+        // Créer et démarrer la tâche de chargement des comptes
+        Task<Void> loadAccountsTask = createLoadAccountsTask();
+        loadAccountsTask.setOnSucceeded(event -> {
 
+            loginTaskDelegate.onLoginTaskCompleted();
+
+            msStage.initModality(Modality.APPLICATION_MODAL);
+            msStage.initOwner(Main.primaryStage);
+
+            Scene msScene = new Scene(msPane, 500, 700);
+            msStage.setScene(msScene);
+        });
+        loadAccountsTask.setOnFailed(event -> {
+            // Gérer les erreurs ici, si nécessaire
+        });
+        new Thread(loadAccountsTask).start();
+    }
+
+
+    private Task<Void> createLoadAccountsTask() {
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() {
+                loadAccounts();
+                System.out.println("Comptes chargés");
+                return null;
+            }
+        };
+        return task;
+    }
+
+
+    private void loadAccounts() {
         NoLogin noLogin = new NoLogin();
         String token = Utilities.getClientToken();
         if (token != null) {
         }
-
+        loginTaskDelegate.updateLoadingMessage("Connexion en cours");
         Main.accountList = new ArrayList<>();
         List<Account> accounts = noLogin.getAccountManager().getAccounts();
         String defaultAccount = Utilities.getDefaultAccount();
@@ -62,11 +96,6 @@ public class LoginController {
             }
         }
 
-        msStage.initModality(Modality.APPLICATION_MODAL);
-        msStage.initOwner(Main.primaryStage);
-
-        Scene msScene = new Scene(msPane, 500, 700);
-        msStage.setScene(msScene);
     }
 
     @FXML
@@ -85,6 +114,9 @@ public class LoginController {
 
     public void onConnectMSClicked() {
         msPane.getChildren().clear();
+
+        System.out.println("Opening Microsoft login page");
+        System.out.println("URL: " + loginUrl);
 
         WebView webView = new WebView();
         webView.getEngine().load(loginUrl);
@@ -118,4 +150,14 @@ public class LoginController {
 
         msStage.show();
     }
+
+    public interface LoginTaskDelegate {
+        void onLoginTaskCompleted();
+        void updateLoadingMessage(String message);
+    }
+
+    public void setLoginTaskDelegate(LoginTaskDelegate loginTaskDelegate) {
+        this.loginTaskDelegate = loginTaskDelegate;
+    }
+
 }
