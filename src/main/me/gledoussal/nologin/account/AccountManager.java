@@ -69,10 +69,15 @@ public class AccountManager
 						.map(i -> i.getKey())
 						.collect(Collectors.toCollection(ArrayList::new));
 
+				// On essaie de récupérer lastTokenRefresh, si il n'existe pas, on le crée
+				Long lastTokenRefresh = 0L;
+				try { lastTokenRefresh = obj.get("lastTokenRefresh").getAsLong(); } catch (NullPointerException e) { lastTokenRefresh = 0L; }
+
+
 				accounts.add(new Account(profileKeys.get(0),
 						obj.get("profiles").getAsJsonObject().get(profileKeys.get(0)).getAsJsonObject().get("displayName").getAsString(),
 						obj.get("accessToken").getAsString(),
-						accountName, obj.get("username").getAsString(), obj.get("ms").getAsBoolean(), obj.get("refreshToken").getAsString()));
+						accountName, obj.get("username").getAsString(), obj.get("ms").getAsBoolean(), obj.get("refreshToken").getAsString(), lastTokenRefresh));
 			}
 		}
 		catch (ClassCastException e) {

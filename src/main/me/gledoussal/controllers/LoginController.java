@@ -5,7 +5,9 @@ import fr.litarvan.openauth.AuthenticationException;
 import fr.litarvan.openauth.Authenticator;
 import fr.litarvan.openauth.model.AuthAgent;
 import fr.litarvan.openauth.model.response.AuthResponse;
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
@@ -13,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
@@ -53,16 +56,49 @@ public class LoginController {
     private final Pane msPane = new Pane();
     private final Stage msStage = new Stage();
 
-
+    private LoginTaskDelegate loginTaskDelegate;
 
     @FXML
     public void initialize() {
+        // Créer et démarrer la tâche de chargement des comptes
+        Task<Void> loadAccountsTask = createLoadAccountsTask();
+        loadAccountsTask.setOnSucceeded(event -> {
+
+            loginTaskDelegate.onLoginTaskCompleted();
+
+            msStage.initModality(Modality.APPLICATION_MODAL);
+            msStage.initOwner(Main.primaryStage);
+
+            Scene msScene = new Scene(msPane, 500, 700);
+            msStage.setScene(msScene);
+        });
+        loadAccountsTask.setOnFailed(event -> {
+            // Gérer les erreurs ici, si nécessaire
+        });
+        new Thread(loadAccountsTask).start();
+    }
+
+
+    private Task<Void> createLoadAccountsTask() {
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() {
+                loadAccounts();
+                System.out.println("Comptes chargés");
+                return null;
+            }
+        };
+        return task;
+    }
+
+
+    private void loadAccounts() {
         NoLogin noLogin = new NoLogin();
         String token = Utilities.getClientToken();
         if (token != null) {
             clientToken = token;
         }
-
+        loginTaskDelegate.updateLoadingMessage("Connexion en cours");
         Main.accountList = new ArrayList<>();
         List<Account> accounts = noLogin.getAccountManager().getAccounts();
         String defaultAccount = Utilities.getDefaultAccount();
@@ -81,11 +117,6 @@ public class LoginController {
             }
         }
 
-        msStage.initModality(Modality.APPLICATION_MODAL);
-        msStage.initOwner(Main.primaryStage);
-
-        Scene msScene = new Scene(msPane, 500, 700);
-        msStage.setScene(msScene);
     }
 
     public void onConnectClicked() {
@@ -179,4 +210,14 @@ public class LoginController {
 
         msStage.show();
     }
+
+    public interface LoginTaskDelegate {
+        void onLoginTaskCompleted();
+        void updateLoadingMessage(String message);
+    }
+
+    public void setLoginTaskDelegate(LoginTaskDelegate loginTaskDelegate) {
+        this.loginTaskDelegate = loginTaskDelegate;
+    }
+
 }

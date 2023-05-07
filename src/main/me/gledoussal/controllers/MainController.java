@@ -1,25 +1,33 @@
 package me.gledoussal.controllers;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import lombok.Getter;
 import lombok.Setter;
 import me.gledoussal.AppProperties;
 import me.gledoussal.Main;
 
 import java.io.IOException;
+import java.util.Stack;
 
-public class MainController {
+public class MainController implements LoginController.LoginTaskDelegate {
 
     @FXML
     private Label titleLabel;
 
-    @Getter @Setter @FXML private StackPane stackPane;
+    @Getter @Setter @FXML private AnchorPane stackPane;
+
+    @FXML
+    private BorderPane loadingPane;
+    @FXML
+    private Label loadingMessage;
 
     @FXML
     private LoginController loginPaneController;
@@ -48,13 +56,9 @@ public class MainController {
 
             this.loginNode = loginFXMLLoader.load();
             this.loginPaneController = loginFXMLLoader.getController();
-            this.loginPaneController.setMainController(this);
 
-            if (Main.account == null) {
-                this.loadPane(loginNode);
-            } else {
-                this.onAuthCompleted();
-            }
+            this.loginPaneController.setMainController(this);
+            this.loginPaneController.setLoginTaskDelegate(this);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -64,12 +68,14 @@ public class MainController {
     private void loadPane(Node node) {
         ObservableList<Node> mainPaneChildren = this.stackPane.getChildren();
 
+        System.out.println(mainPaneChildren.size());
         if (mainPaneChildren.size() == 1) {
             mainPaneChildren.add(node);
             mainPaneChildren.get(1).toBack();
         } else
             mainPaneChildren.set(0, node);
     }
+
 
     @FXML
     private void onExitClicked(MouseEvent event) {
@@ -126,5 +132,28 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onLoginTaskCompleted() {
+        Platform.runLater(() -> {
+            loadingPane.setVisible(false);
+            if (Main.account == null) {
+                this.loadPane(loginNode);
+            } else {
+                this.onAuthCompleted();
+            }
+        });
+    }
+
+    public void setLoadingMessage(String message) {
+        Platform.runLater(() -> {
+            loadingMessage.setText(message);
+        });
+    }
+
+    @Override
+    public void updateLoadingMessage(String message) {
+        setLoadingMessage(message);
     }
 }

@@ -2,7 +2,6 @@ package me.gledoussal.nologin.auth;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import me.gledoussal.Main;
 import me.gledoussal.nologin.account.Account;
 
 import java.io.BufferedReader;
@@ -12,6 +11,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 public class Microsoft {
     private static final String authTokenUrl = "https://login.live.com/oauth20_token.srf";
@@ -34,8 +35,17 @@ public class Microsoft {
         if (ownGame(minecraftJson.get("access_token").getAsString())) {
             JsonObject mcProfileJson = getMcProfile(minecraftJson.get("access_token").getAsString());
 
-            return new Account(mcProfileJson.get("id").getAsString(), mcProfileJson.get("name").getAsString(), minecraftJson.get("access_token").getAsString(),
-                    mcProfileJson.get("id").getAsString(), mcProfileJson.get("name").getAsString(), true, accessTokenJson.get("refresh_token").getAsString());
+            return new Account(
+                    mcProfileJson.get("id").getAsString(),
+                    mcProfileJson.get("name").getAsString(),
+                    minecraftJson.get("access_token").getAsString(),
+                    mcProfileJson.get("id").getAsString(),
+                    mcProfileJson.get("name").getAsString(),
+                    true,
+                    accessTokenJson.get("refresh_token").getAsString(),
+                    // Renvoie mcProfileJson.get("lastTokenRefresh") en long
+                    new Timestamp(System.currentTimeMillis()).getTime()
+            );
 
         }
 
@@ -49,10 +59,35 @@ public class Microsoft {
         JsonObject xstsJson = acquireXsts(xblAuthJson.get("Token").getAsString());
 
         String uhs = xstsJson.get("DisplayClaims").getAsJsonObject().get("xui").getAsJsonArray().get(0).getAsJsonObject().get("uhs").getAsString();
-        JsonObject minecraftJson = acquireMinecraftToken(uhs, xstsJson.get("Token").getAsString());
 
         account.setRefreshToken(accessTokenJson.get("refresh_token").getAsString());
-        account.setAccessToken(minecraftJson.get("access_token").getAsString());
+
+        System.out.println("lastTokenRefresh : " + account.getLastTokenRefresh());
+        // Si le lastTokenRefresh est supérieur à 24h, on refait une demande de token
+        // Sinon, on ne fait rien car le token est toujours valide (durée de validité de 24h soit 86400000ms)
+
+        if (System.currentTimeMillis() - account.getLastTokenRefresh() > 5000) {
+            Timestamp now = new Timestamp(System.currentTimeMillis());
+
+            System.out.println("Token expiré. Renouvellement...");
+//            acquireMinecraftToken(uhs, xstsJson.get("Token").getAsString());
+//            acquireMinecraftToken(uhs, xstsJson.get("Token").getAsString());
+
+            JsonObject minecraftJson = acquireMinecraftToken(uhs, xstsJson.get("Token").getAsString());
+
+            // Tant que le token n'est pas valide, on le renouvelle toutes les 5 secondes
+            while (minecraftJson.get("access_token") == null) {
+                System.out.println("Impossible de joindre l'API Minecraft. Nouvelle tentative dans 5 secondes.");
+                minecraftJson = acquireMinecraftToken(uhs, xstsJson.get("Token").getAsString());
+                // On attend 5 secondes avant de refaire une demande de token
+                try { Thread.sleep(5000); } catch (InterruptedException e) { throw new RuntimeException(e); }
+            }
+
+            account.setAccessToken(minecraftJson.get("access_token").getAsString());
+            account.setLastTokenRefresh(now.getTime());
+        } else {
+            System.out.println("Token valide. Pas de renouvellement.");
+        }
 
         return account;
     }
@@ -227,6 +262,7 @@ public class Microsoft {
             String response = "";
             for (String line; (line = br.readLine()) != null; response += line);
 
+            System.out.println(con.getResponseCode());
             System.out.println(response);
             return new Gson().fromJson(response, JsonObject.class);
 

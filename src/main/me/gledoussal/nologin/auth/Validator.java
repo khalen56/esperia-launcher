@@ -75,7 +75,6 @@ public class Validator {
 				acc.setAccessToken(response.getAccessToken());
 				updateMcFile(acc, response);
 			} else {
-				Microsoft.refreshToken(acc);
 				updateMcFile(Microsoft.refreshToken(acc), null);
 			}
 
@@ -108,8 +107,16 @@ public class Validator {
 				if (entry.getValue().getAsJsonObject().getAsJsonObject("profiles").getAsJsonObject(acc.getUUID()) != null) {
 					JsonObject profileObj = profilesObj.getAsJsonObject("authenticationDatabase").getAsJsonObject(entry.getKey());
 
-					if (response != null) {
-						profileObj.remove("accessToken");
+					profileObj.remove("accessToken");
+					if(acc.isMicrosoft()) {
+						profileObj.addProperty("accessToken", acc.getAccessToken());
+
+						// Si la date de dernier refresh du token est définie, on l'ajoute au fichier
+						if (acc.getLastTokenRefresh() != 0) {
+							profileObj.remove("lastTokenRefresh");
+							profileObj.addProperty("lastTokenRefresh", acc.getLastTokenRefresh());
+						}
+					} else if (response != null) {
 						profileObj.addProperty("accessToken", response.getAccessToken());
 					}
 				}
