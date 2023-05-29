@@ -15,13 +15,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>fr.litarvan</groupId>
-            <artifactId>openauth</artifactId>
-            <version>1.0.4</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/openauth-1.0.4.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>fr.theshark34</groupId>
             <artifactId>openlauncherlib</artifactId>
             <version>3.0.4</version>
@@ -45,7 +38,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.4</version>
+            <version>1.18.26</version>
         </dependency>
     </dependencies>
     <build>
@@ -72,7 +65,7 @@
                     <!-- MainClass in mainfest make a executable jar -->
                     <archive>
                         <manifest>
-                            <mainClass>me.gledoussal.Main</mainClass>
+                            <mainClass>main.me.gledoussal.Main</mainClass>
                         </manifest>
                     </archive>
 

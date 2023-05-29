@@ -1,25 +1,33 @@
 package me.gledoussal.controllers;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import lombok.Getter;
 import lombok.Setter;
 import me.gledoussal.AppProperties;
 import me.gledoussal.Main;
 
 import java.io.IOException;
+import java.util.Stack;
 
 public class MainController {
 
     @FXML
     private Label titleLabel;
 
-    @Getter @Setter @FXML private StackPane stackPane;
+    @Getter @Setter @FXML private AnchorPane stackPane;
+
+    @FXML
+    private BorderPane loadingPane;
+    @FXML
+    private Label loadingMessage;
 
     @FXML
     private LoginController loginPaneController;
@@ -39,6 +47,8 @@ public class MainController {
     @Getter @Setter
     private Node optionsNode;
 
+    private boolean accountsLoaded = false;
+
     @FXML
     private void initialize() {
         titleLabel.setText(Main.APPLICATION_TITLE);
@@ -50,12 +60,6 @@ public class MainController {
             this.loginPaneController = loginFXMLLoader.getController();
             this.loginPaneController.setMainController(this);
 
-            if (Main.account == null) {
-                this.loadPane(loginNode);
-            } else {
-                this.onAuthCompleted();
-            }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,13 +67,10 @@ public class MainController {
 
     private void loadPane(Node node) {
         ObservableList<Node> mainPaneChildren = this.stackPane.getChildren();
-
-        if (mainPaneChildren.size() == 1) {
-            mainPaneChildren.add(node);
-            mainPaneChildren.get(1).toBack();
-        } else
-            mainPaneChildren.set(0, node);
+        // On place le contenu dans contentPane
+        mainPaneChildren.set(0, node);
     }
+
 
     @FXML
     private void onExitClicked(MouseEvent event) {
@@ -77,6 +78,7 @@ public class MainController {
     }
 
     public void onAuthCompleted() {
+        setLoadingPaneVisible(false);
         FXMLLoader loginFXMLLoader = new FXMLLoader(getClass().getResource("/views/play.fxml"));
         try {
             this.playNode = loginFXMLLoader.load();
@@ -126,5 +128,31 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onLoginTaskCompleted() {
+        Platform.runLater(() -> {
+            setLoadingPaneVisible(false);
+            if(!accountsLoaded) {
+                if (Main.account == null) {
+                    this.loadPane(loginNode);
+                } else {
+                    this.onAuthCompleted();
+                }
+            }
+            accountsLoaded = true;
+        });
+    }
+
+    public void setLoadingMessage(String message) {
+        Platform.runLater(() -> {
+            loadingMessage.setText(message);
+        });
+    }
+
+    public void setLoadingPaneVisible(boolean visible) {
+        Platform.runLater(() -> {
+            loadingPane.setVisible(visible);
+        });
     }
 }

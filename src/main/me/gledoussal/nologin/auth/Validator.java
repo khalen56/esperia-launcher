@@ -21,10 +21,7 @@ package me.gledoussal.nologin.auth;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import fr.litarvan.openauth.AuthPoints;
-import fr.litarvan.openauth.AuthenticationException;
-import fr.litarvan.openauth.Authenticator;
-import fr.litarvan.openauth.model.response.RefreshResponse;
+import me.gledoussal.controllers.MainController;
 import me.gledoussal.nologin.account.Account;
 import me.gledoussal.nologin.util.Utilities;
 
@@ -37,7 +34,10 @@ import java.util.Map;
 public class Validator {
 
 	private String clientToken;
-	private Authenticator authenticator = new Authenticator(Authenticator.MOJANG_AUTH_URL, AuthPoints.NORMAL_AUTH_POINTS);
+
+	private MainController mainController;
+
+	private Microsoft microsoft = new Microsoft();
 
 	public Validator() 
 	{
@@ -51,48 +51,20 @@ public class Validator {
 	 */
 	public boolean validateAccount(Account acc) 
 	{
-		if (!acc.isMicrosoft()) {
-			try
-			{
-				authenticator.validate(acc.getAccessToken());
-				return true;
-			}
-			catch (AuthenticationException e)
-			{
-				return refreshToken(acc);
-			}
-		} else {
-			return refreshToken(acc);
-		}
+		return refreshToken(acc);
 	}
 
 	private boolean refreshToken(Account acc)
 	{
-		try 
-		{
-			if (!acc.isMicrosoft()) {
-				RefreshResponse response = authenticator.refresh(acc.getAccessToken(), getClientToken());
-				acc.setAccessToken(response.getAccessToken());
-				updateMcFile(acc, response);
-			} else {
-				Microsoft.refreshToken(acc);
-				updateMcFile(Microsoft.refreshToken(acc), null);
-			}
-
-			return true;
-		}
-		catch (AuthenticationException e) 
-		{
-			System.out.println(e.getErrorModel().getErrorMessage());
-			return false;
-		}
+		updateMcFile(microsoft.refreshToken(acc));
+		return true;
 	}
 
 	/**
 	 * Used to rewrite the launcher_profiles file
 	 * @return
 	 */
-	private void updateMcFile(Account acc, RefreshResponse response)
+	private void updateMcFile(Account acc)
 	{
 		File profiles = new File(Utilities.getMinecraftDirectory(), "launcher_profiles.json");
 		try 
@@ -108,10 +80,16 @@ public class Validator {
 				if (entry.getValue().getAsJsonObject().getAsJsonObject("profiles").getAsJsonObject(acc.getUUID()) != null) {
 					JsonObject profileObj = profilesObj.getAsJsonObject("authenticationDatabase").getAsJsonObject(entry.getKey());
 
-					if (response != null) {
-						profileObj.remove("accessToken");
-						profileObj.addProperty("accessToken", response.getAccessToken());
+					profileObj.remove("accessToken");
+					profileObj.addProperty("accessToken", acc.getAccessToken());
+
+					if (acc.getLastTokenRefresh() != 0) {
+						profileObj.remove("lastTokenRefresh");
+						profileObj.addProperty("lastTokenRefresh", acc.getLastTokenRefresh());
 					}
+
+					profileObj.remove("refreshToken");
+					profileObj.addProperty("refreshToken", acc.getRefreshToken());
 				}
 			}
 
@@ -125,30 +103,7 @@ public class Validator {
 		}
 	}
 
-	/**
-	 * Used to retrieve the ClientToken from the profiles file
-	 * @return
-	 */
-	public String getClientToken() 
-	{
-		if(clientToken == null) 
-		{
-			File profiles = new File(Utilities.getMinecraftDirectory(), "launcher_profiles.json");
-			try 
-			{
-				FileInputStream fis = new FileInputStream(profiles);
-				byte[] data = new byte[(int) fis.available()];
-				fis.read(data);
-				fis.close();
-				String jsonProfiles = new String(data, "UTF-8");
-				JsonObject profilesObj = (JsonObject) (new JsonParser()).parse(jsonProfiles);
-				clientToken = profilesObj.get("clientToken").getAsString();
-			}
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
-		}
-		return clientToken;
+	public void setMainController(MainController mainController) {
+		microsoft.setMainController(mainController);
 	}
 }

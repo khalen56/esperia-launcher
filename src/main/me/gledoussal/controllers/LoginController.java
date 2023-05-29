@@ -1,19 +1,14 @@
 package me.gledoussal.controllers;
 
-import fr.litarvan.openauth.AuthPoints;
-import fr.litarvan.openauth.AuthenticationException;
-import fr.litarvan.openauth.Authenticator;
-import fr.litarvan.openauth.model.AuthAgent;
-import fr.litarvan.openauth.model.response.AuthResponse;
+
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
@@ -27,104 +22,59 @@ import me.gledoussal.nologin.util.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class LoginController {
 
     @FXML
     private ImageView back;
 
-    @FXML
-    private TextField usernameField;
-
-    @FXML
-    private TextField passwordField;
-
-    @FXML
-    private CheckBox rememberCheck;
-
-    @FXML
-    private Label loginStatusLabel;
-
     @Setter
     private MainController mainController;
 
-    private String clientToken = "";
+    private Microsoft microsoft = new Microsoft();
 
     private final Pane msPane = new Pane();
     private final Stage msStage = new Stage();
-
-
-
     @FXML
     public void initialize() {
-        NoLogin noLogin = new NoLogin();
-        String token = Utilities.getClientToken();
-        if (token != null) {
-            clientToken = token;
-        }
+        // Créer et démarrer la tâche de chargement des comptes
+        Task<Void> loadAccountsTask = new Task<Void>() {
+            @Override
+            protected Void call() {
+                loadAccounts();
+                return null;
+            }
+        };
+        loadAccountsTask.setOnSucceeded(event -> { mainController.onLoginTaskCompleted(); });
+        new Thread(loadAccountsTask).start();
+    }
 
+
+    private void loadAccounts() {
+        NoLogin noLogin = new NoLogin(mainController);
+
+        mainController.setLoadingMessage("Connexion en cours");
         Main.accountList = new ArrayList<>();
         List<Account> accounts = noLogin.getAccountManager().getAccounts();
         String defaultAccount = Utilities.getDefaultAccount();
         System.out.println("Comptes trouvés : " + accounts.size());
+
+        if (Main.account != null) {
+            back.setVisible(true);
+        }
+
         for(Account acc : accounts) {
-            if(noLogin.getValidator().validateAccount(acc)) {
+            if(Main.account != null || noLogin.getValidator().validateAccount(acc)) {
                 Main.accountList.add(acc);
                 System.out.println(acc.getDisplayName() + " valide");
-                if (acc.getUUID().equals(defaultAccount) || accounts.size() == 1) {
+                if (Main.account == null && (acc.getUUID().equals(defaultAccount) || accounts.size() == 1)) {
                     Main.account = acc;
                     System.out.println(acc.getDisplayName() + " est le compte par défaut");
-                    back.setVisible(true);
                 }
             } else {
                 System.out.println(acc.getDisplayName() + " invalide");
             }
-        }
-
-        msStage.initModality(Modality.APPLICATION_MODAL);
-        msStage.initOwner(Main.primaryStage);
-
-        Scene msScene = new Scene(msPane, 500, 700);
-        msStage.setScene(msScene);
-    }
-
-    public void onConnectClicked() {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        Boolean remember = rememberCheck.isSelected();
-
-        if (!username.isEmpty() && !password.isEmpty()) {
-            auth(username, password, remember);
-        } else {
-            loginStatusLabel.setText("Merci de remplir le nom d'utilisateur et le mot de passe.");
-            loginStatusLabel.setTextFill(Color.RED);
-        }
-    }
-
-    private void auth(String username, String password, Boolean remember) {
-        Authenticator authenticator = new Authenticator(Authenticator.MOJANG_AUTH_URL, AuthPoints.NORMAL_AUTH_POINTS);
-        AuthResponse response;
-
-        try {
-            response = authenticator.authenticate(AuthAgent.MINECRAFT, username, password, clientToken);
-            Account account = new Account(response.getSelectedProfile().getId(),
-                    response.getSelectedProfile().getName(), response.getAccessToken(),
-                    response.getSelectedProfile().getId(), username);
-
-            Main.account = account;
-
-            if (remember) {
-                Main.accountList.add(account);
-                System.out.println("Nombre de comptes : " + Main.accountList.size());
-                Utilities.addAccount(account, response);
-                Utilities.updateDefaultAccount(account);
-            }
-
-            mainController.onAuthCompleted();
-        } catch (AuthenticationException e) {
-            e.printStackTrace();
-            loginStatusLabel.setText(e.getMessage());
-            loginStatusLabel.setTextFill(Color.RED);
         }
     }
 
@@ -132,8 +82,6 @@ public class LoginController {
     private void onBackClicked() {
         mainController.reopenPlay();
     }
-
-    private Scene msScene;
 
     private static final String loginUrl = "https://login.live.com/oauth20_authorize.srf" +
             "?client_id=00000000402b5328" +
@@ -145,38 +93,67 @@ public class LoginController {
 
 
     public void onConnectMSClicked() {
-        msPane.getChildren().clear();
+        // Créer et démarrer la tâche de connexion à Microsoft
+        Task<Void> connectToMicrosoftTask = new Task<Void>() {
+            @Override
+            protected Void call() {
+                connectToMicrosoft();
+                return null;
+            }
+        };
 
-        WebView webView = new WebView();
-        webView.getEngine().load(loginUrl);
-        webView.getEngine().setJavaScriptEnabled(true);
-        webView.setPrefHeight(700);
-        webView.setPrefWidth(500);
+        connectToMicrosoftTask.setOnSucceeded(event -> { mainController.onAuthCompleted(); });
+        new Thread(connectToMicrosoftTask).start();
+    }
 
-        java.net.CookieHandler.setDefault(new com.sun.webkit.network.CookieManager());
+    private void connectToMicrosoft() {
+        // On met un CountDownLatch pour attendre que l'utilisateur se connecte avant de terminer la tâche
+        CountDownLatch latch = new CountDownLatch(1);
 
-        webView.getEngine().getHistory().getEntries().addListener((ListChangeListener<WebHistory.Entry>) c -> {
-            if (c.next() && c.wasAdded()) {
-                for (WebHistory.Entry entry : c.getAddedSubList()) {
-                    if (entry.getUrl().startsWith(redirectUrlSuffix)) {
+        Platform.runLater(() -> {
+            Pane newMsPane = new Pane();
+            Scene msScene = new Scene(newMsPane, 500, 700);
+            msStage.setScene(msScene);
 
-                        msStage.hide();
-                        String authCode = entry.getUrl().substring(entry.getUrl().indexOf("=") + 1, entry.getUrl().indexOf("&"));
-                        // once we got the auth code, we can turn it into a oauth token
+            newMsPane.getChildren().clear();
 
-                        Main.account = Microsoft.auth(authCode);
-                        Main.accountList.add(Main.account);
-                        Utilities.addAccount(Main.account, null);
-                        Utilities.updateDefaultAccount(Main.account);
-                        mainController.onAuthCompleted();
+            WebView webView = new WebView();
+            webView.getEngine().load(loginUrl);
+            webView.getEngine().setJavaScriptEnabled(true);
+            webView.setPrefHeight(700);
+            webView.setPrefWidth(500);
 
+            java.net.CookieHandler.setDefault(new com.sun.webkit.network.CookieManager());
+
+            webView.getEngine().getHistory().getEntries().addListener((ListChangeListener<WebHistory.Entry>) c -> {
+                if (c.next() && c.wasAdded()) {
+                    for (WebHistory.Entry entry : c.getAddedSubList()) {
+                        if (entry.getUrl().startsWith(redirectUrlSuffix)) {
+
+                            msStage.hide();
+                            String authCode = entry.getUrl().substring(entry.getUrl().indexOf("=") + 1, entry.getUrl().indexOf("&"));
+
+                            microsoft.setMainController(mainController);
+                            Main.account = microsoft.auth(authCode);
+                            Main.accountList.add(Main.account);
+                            Utilities.addAccount(Main.account);
+                            Utilities.updateDefaultAccount(Main.account);
+
+                            latch.countDown(); // Décrémenter le compteur du CountDownLatch
+                        }
                     }
                 }
-            }
+            });
+
+            newMsPane.getChildren().add(webView);
+
+            msStage.show();
         });
 
-        msPane.getChildren().add(webView);
-
-        msStage.show();
+        try {
+            latch.await(); // Attendre que le CountDownLatch atteigne zéro
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

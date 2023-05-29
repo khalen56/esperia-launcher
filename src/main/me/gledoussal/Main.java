@@ -39,7 +39,7 @@ public class Main extends Application {
     public static final File BETA_DIR = BETA_INFOS.getGameDir();
     public static final String BETA_UPDATE_URL = "https://testing.launcher.esperia-rp.net/";
 
-    public static final String LAUNCHER_VERSION = "1.4.0";
+    public static final String LAUNCHER_VERSION = "1.5.1";
     public static final String LAUNCHER_CHECK_URL = "https://launcher.esperia-rp.net/resources/launcher.version";
     public static final String LAUNCHER_DOWNLOAD_EXE_URL = "https://launcher.esperia-rp.net/resources/Esperia.exe";
     public static final String LAUNCHER_DOWNLOAD_JAR_URL = "https://launcher.esperia-rp.net/resources/Esperia.jar";
